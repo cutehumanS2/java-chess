@@ -46,7 +46,7 @@ public class Board {
     }
 
     public Piece findPieceBySquare(final Square square) {
-        return pieces.get(square);
+        return pieces.getOrDefault(square, new Piece(PieceType.EMPTY, PieceColor.NONE));
     }
 
     private void validateIsNotTurn(final Square source, final PieceColor turn) {
