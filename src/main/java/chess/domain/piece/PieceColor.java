@@ -13,8 +13,4 @@ public enum PieceColor {
         }
         return BLACK;
     }
-
-    public boolean isBlack() {
-        return this == BLACK;
-    }
 }

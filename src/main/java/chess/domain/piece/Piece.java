@@ -1,5 +1,6 @@
 package chess.domain.piece;
 
+import chess.domain.board.Board;
 import chess.domain.square.Square;
 
 public class Piece {
@@ -12,23 +13,20 @@ public class Piece {
         this.color = color;
     }
 
-    public boolean canMove(final Square source, final Square target) {
-        if (type == PieceType.PAWN) {
-            return type.canMove(source, target) && source.isNotBackward(target, color);
-        }
-        return type.canMove(source, target);
+    public boolean canMove(final Board board, final Square source, final Square target) {
+        return type.canMove(board, source, target);
     }
 
     public boolean isSameColor(final PieceColor other) {
         return color == other;
     }
 
-    public boolean isEmpty() {
-        return type == PieceType.EMPTY;
+    public boolean isBlack() {
+        return color == PieceColor.BLACK;
     }
 
-    public boolean isPawn() {
-        return type == PieceType.PAWN;
+    public boolean isNotEmpty() {
+        return type != PieceType.EMPTY;
     }
 
     public PieceType getType() {

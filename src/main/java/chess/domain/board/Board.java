@@ -45,7 +45,7 @@ public class Board {
         }
     }
 
-    private Piece findPieceBySquare(final Square square) {
+    public Piece findPieceBySquare(final Square square) {
         return pieces.get(square);
     }
 
@@ -58,22 +58,9 @@ public class Board {
 
     private void validateCannotMove(final Square source, final Square target) {
         final Piece sourcePiece = findPieceBySquare(source);
-        if (findPieceBySquare(source).isPawn()) {
-            if (!canPawnAttack(source, target)) {
-                throw new IllegalArgumentException(ERROR_MOVE_NOT_AVAILABLE);
-            }
-        }
-
-        if (!sourcePiece.canMove(source, target)) {
+        if (!sourcePiece.canMove(this, source, target)) {
             throw new IllegalArgumentException(ERROR_MOVE_NOT_AVAILABLE);
         }
-    }
-
-    private boolean canPawnAttack(final Square source, final Square target) {
-        if (source.isDiagonal(target) && findPieceBySquare(target).isEmpty()) {
-            return false;
-        }
-        return true;
     }
 
     private void validateNotExistObstacleOnPath(final Square source, final Square target) {
@@ -84,7 +71,7 @@ public class Board {
     }
 
     private void checkIsNotEmpty(final Square square) {
-        if (!findPieceBySquare(square).isEmpty()) {
+        if (findPieceBySquare(square).isNotEmpty()) {
             throw new IllegalArgumentException(ERROR_MOVE_NOT_AVAILABLE);
         }
     }

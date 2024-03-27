@@ -3,10 +3,10 @@ package chess.domain.piece.strategy;
 import chess.domain.board.Board;
 import chess.domain.square.Square;
 
-public class EmptyStrategy implements MoveStrategy {
+public class BishopMoveStrategy implements MoveStrategy {
 
     @Override
     public boolean canMove(final Board board, final Square source, final Square target) {
-        return false;
+        return source.isDiagonal(target);
     }
 }

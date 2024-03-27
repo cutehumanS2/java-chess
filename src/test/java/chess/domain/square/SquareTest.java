@@ -2,7 +2,6 @@ package chess.domain.square;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import chess.domain.piece.PieceColor;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
@@ -13,43 +12,28 @@ import java.util.List;
 
 class SquareTest {
 
-    @Nested
-    class isStraightTest {
+    @DisplayName("출발지에서 목적지까지 수직으로 이동하면 True를 리턴한다.")
+    @ParameterizedTest
+    @CsvSource({"ONE", "EIGHT"})
+    void returnTrueWhenMoveVertical(final Rank rank) {
+        final Square source = new Square(File.e, Rank.FOUR);
+        final Square target = new Square(File.e, rank);
 
-        @DisplayName("출발지에서 목적지까지 수직으로 이동하면 True를 리턴한다.")
-        @ParameterizedTest
-        @CsvSource({"ONE", "EIGHT"})
-        void returnTrueWhenMoveVertical(final Rank rank) {
-            final Square source = new Square(File.e, Rank.FOUR);
-            final Square target = new Square(File.e, rank);
+        final boolean actual = source.isVertical(target);
 
-            final boolean actual = source.isStraight(target);
+        assertThat(actual).isTrue();
+    }
 
-            assertThat(actual).isTrue();
-        }
+    @DisplayName("출발지에서 목적지까지 수평으로 이동하면 True를 리턴한다.")
+    @ParameterizedTest
+    @CsvSource({"a", "h"})
+    void returnTrueWhenMoveHorizontal(final File file) {
+        final Square source = new Square(File.e, Rank.FOUR);
+        final Square target = new Square(file, Rank.FOUR);
 
-        @DisplayName("출발지에서 목적지까지 수평으로 이동하면 True를 리턴한다.")
-        @ParameterizedTest
-        @CsvSource({"a", "h"})
-        void returnTrueWhenMoveHorizontal(final File file) {
-            final Square source = new Square(File.e, Rank.FOUR);
-            final Square target = new Square(file, Rank.FOUR);
+        final boolean actual = source.isHorizontal(target);
 
-            final boolean actual = source.isStraight(target);
-
-            assertThat(actual).isTrue();
-        }
-
-        @DisplayName("출발지에서 목적지까지 수직, 수평으로 이동하지 않으면 False를 리턴한다.")
-        @Test
-        void returnFalseWhenCannotMoveStraight() {
-            final Square source = new Square(File.e, Rank.FOUR);
-            final Square target = new Square(File.f, Rank.FIVE);
-
-            final boolean actual = source.isStraight(target);
-
-            assertThat(actual).isFalse();
-        }
+        assertThat(actual).isTrue();
     }
 
     @Nested
@@ -79,188 +63,60 @@ class SquareTest {
         }
     }
 
-    @Nested
-    class isWithinOneStepTest {
+    @DisplayName("출발지의 파일과 목적지의 파일 사이의 거리를 구한다.")
+    @Test
+    void calculateFileDistanceFromSourceToTarget() {
+        final Square source = new Square(File.e, Rank.FOUR);
+        final Square target = new Square(File.h, Rank.FOUR);
 
-        @DisplayName("출발지부터 목적지까지 한 칸 이내로 이동한 경우 True를 리턴한다.")
-        @ParameterizedTest
-        @CsvSource({"d, FIVE", "e, FIVE", "f, FIVE", "f, FOUR", "f, THREE", "e, THREE", "d, THREE", "d, FOUR"})
-        void returnTrueWhenMoveWithinOneStep(final File file, final Rank rank) {
-            final Square source = new Square(File.e, Rank.FOUR);
-            final Square target = new Square(file, rank);
+        int actual = source.calculateFileDistance(target);
 
-            final boolean actual = source.isWithinOneStep(target);
-
-            assertThat(actual).isTrue();
-        }
-
-        @DisplayName("출발지부터 목적지까지 한 칸을 초과하여 이동한 경우 False를 리턴한다.")
-        @Test
-        void returnFalseWhenMoveMoreThanOneStep() {
-            final Square source = new Square(File.e, Rank.FOUR);
-            final Square target = new Square(File.d, Rank.SIX);
-
-            final boolean actual = source.isWithinOneStep(target);
-
-            assertThat(actual).isFalse();
-        }
+        assertThat(actual).isEqualTo(3);
     }
 
-    @Nested
-    class isStraightAndDiagonalForKnightTest {
+    @DisplayName("출발지의 랭크와 목적지의 랭크 사이의 거리를 구한다.")
+    @Test
+    void calculateRankDistanceFromSourceToTarget() {
+        final Square source = new Square(File.e, Rank.FOUR);
+        final Square target = new Square(File.e, Rank.SEVEN);
 
-        @DisplayName("열 한 칸, 행 두 칸을 이동한 경우 True를 리턴한다.")
-        @Test
-        void returnTrueWhenMoveFileOneStepAndRankTwoStep() {
-            final Square source = new Square(File.e, Rank.FOUR);
-            final Square target = new Square(File.f, Rank.SIX);
+        int actual = source.calculateRankDistance(target);
 
-            final boolean actual = source.isStraightAndDiagonal(target);
-
-            assertThat(actual).isTrue();
-        }
-
-        @DisplayName("열 두 칸, 행 한 칸을 이동한 경우 True를 리턴한다.")
-        @Test
-        void returnTrueWhenMoveFileTwoStepAndRankOneStep() {
-            final Square source = new Square(File.e, Rank.FOUR);
-            final Square target = new Square(File.c, Rank.FIVE);
-
-            final boolean actual = source.isStraightAndDiagonal(target);
-
-            assertThat(actual).isTrue();
-        }
+        assertThat(actual).isEqualTo(3);
     }
 
-    @Nested
-    class isNotBackwardForPawnTest {
+    @DisplayName("목적지의 방향이 위이면 -1, 아래이면 1을 리턴한다.")
+    @ParameterizedTest
+    @CsvSource({"SIX, -1", "TWO, 1"})
+    void returnDirectionToTarget(final Rank targetRank, final int direction) {
+        final Square source = new Square(File.e, Rank.FOUR);
+        final Square target = new Square(File.e, targetRank);
 
-        @DisplayName("검정색 폰이 아래로 이동하면 True를 리턴한다.")
-        @Test
-        void returnTrueWhenBlackPawnMoveDown() {
-            final PieceColor color = PieceColor.BLACK;
-            final Square source = new Square(File.e, Rank.SEVEN);
-            final Square target = new Square(File.e, Rank.FIVE);
+        int actual = source.calculateRankDirection(target);
 
-            final boolean actual = source.isNotBackward(target, color);
-
-            assertThat(actual).isTrue();
-        }
-
-        @DisplayName("검정색 폰이 위로 이동하면 False를 리턴한다.")
-        @Test
-        void returnFalseWhenBlackPawnMoveUp() {
-            final PieceColor color = PieceColor.BLACK;
-            final Square source = new Square(File.e, Rank.SEVEN);
-            final Square target = new Square(File.e, Rank.EIGHT);
-
-            final boolean actual = source.isNotBackward(target, color);
-
-            assertThat(actual).isFalse();
-        }
-
-        @DisplayName("흰색 폰이 위로 이동하면 True를 리턴한다.")
-        @Test
-        void returnTrueWhenWhitePawnMoveUp() {
-            final PieceColor color = PieceColor.WHITE;
-            final Square source = new Square(File.e, Rank.TWO);
-            final Square target = new Square(File.e, Rank.FOUR);
-
-            final boolean actual = source.isNotBackward(target, color);
-
-            assertThat(actual).isTrue();
-        }
-
-        @DisplayName("흰색 폰이 아래로 이동하면 False를 리턴한다.")
-        @Test
-        void returnFalseWhenWhitePawnMoveDown() {
-            final PieceColor color = PieceColor.WHITE;
-            final Square source = new Square(File.e, Rank.TWO);
-            final Square target = new Square(File.e, Rank.ONE);
-
-            final boolean actual = source.isNotBackward(target, color);
-
-            assertThat(actual).isFalse();
-        }
+        assertThat(actual).isEqualTo(direction);
     }
 
-    @Nested
-    class isOnlyForwardForPawnTest {
+    @DisplayName("흰색 폰의 초기 랭크인지 확인한다.")
+    @ParameterizedTest
+    @CsvSource({"TWO, true", "THREE, false"})
+    void checkIfInitialRankOfWhitePawn(final Rank rank, final boolean expected) {
+        final Square square = new Square(File.e, rank);
 
-        @DisplayName("폰은 첫 번째 이동 시, 수직으로 최대 두 칸까지 이동하면 True를 리턴한다.")
-        @ParameterizedTest
-        @CsvSource({"TWO, e, THREE", "TWO, e, FOUR", "SEVEN, e, SIX", "SEVEN, e, FIVE"})
-        void returnTrueWhenPawnMoveUpToTwoStepWhenFirstMove(
-                final Rank sourceRank, final File file, final Rank targetRank) {
-            final Square source = new Square(File.e, sourceRank);
-            final Square target = new Square(file, targetRank);
+        boolean actual = square.isWhitePawnInitialRank();
 
-            final boolean actual = source.isOnlyForward(target);
-
-            assertThat(actual).isTrue();
-        }
-
-        @DisplayName("폰은 두 번째 이동부터는 수직으로 한 칸씩만 이동할 경우 True를 리턴한다.")
-        @ParameterizedTest
-        @CsvSource({"THREE, e, FOUR", "SIX, e, FIVE"})
-        void returnTrueWhenPawnMoveOnlyOneStepAfterFirstMove(
-                final Rank sourceRank, final File file, final Rank targetRank) {
-            final Square source = new Square(File.e, sourceRank);
-            final Square target = new Square(file, targetRank);
-
-            final boolean actual = source.isOnlyForward(target);
-
-            assertThat(actual).isTrue();
-        }
-
-        @DisplayName("두 번째 이동부터 수직으로 두 칸 이상 이동할 경우 False를 리턴한다.")
-        @Test
-        void returnFalseIfExceedStepLimitAfterFirstMove() {
-            final Square source = new Square(File.e, Rank.FOUR);
-            final Square target = new Square(File.e, Rank.SIX);
-
-            final boolean actual = source.isOnlyForward(target);
-
-            assertThat(actual).isFalse();
-        }
-
-        @DisplayName("수직으로 이동하지 않으면 False를 리턴한다.")
-        @Test
-        void returnFalseWhenNotVertical() {
-            final Square source = new Square(File.e, Rank.FOUR);
-            final Square target = new Square(File.f, Rank.FOUR);
-
-            final boolean actual = source.isOnlyForward(target);
-
-            assertThat(actual).isFalse();
-        }
+        assertThat(actual).isEqualTo(expected);
     }
 
-    @Nested
-    class isAttackForPawnTest {
+    @DisplayName("검정색 폰의 초기 랭크인지 확인한다.")
+    @ParameterizedTest
+    @CsvSource({"SEVEN, true", "SIX, false"})
+    void checkIfInitialRankOfBlackPawn(final Rank rank, final boolean expected) {
+        final Square square = new Square(File.e, rank);
 
-        @DisplayName("대각선 한 칸 위에 다른 팀의 기물이 있어 공격할 수 있는 경우 True를 리턴한다.")
-        @Test
-        void returnTrueWhenCanAttack() {
-            final Square source = new Square(File.e, Rank.THREE);
-            final Square target = new Square(File.f, Rank.FOUR);
+        boolean actual = square.isBlackPawnInitialRank();
 
-            final boolean actual = source.isAttack(target);
-
-            assertThat(actual).isTrue();
-        }
-
-        @DisplayName("공격할 수 없는 경우 False를 리턴한다.")
-        @ParameterizedTest
-        @CsvSource({"e, FIVE", "d, SIX"})
-        void returnFalseWhenCannotAttack(final File file, final Rank rank) {
-            final Square source = new Square(File.e, Rank.THREE);
-            final Square target = new Square(file, rank);
-
-            final boolean actual = source.isAttack(target);
-
-            assertThat(actual).isFalse();
-        }
+        assertThat(actual).isEqualTo(expected);
     }
 
     @Nested

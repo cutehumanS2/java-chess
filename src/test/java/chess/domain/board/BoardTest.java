@@ -70,20 +70,6 @@ class BoardTest {
                     .isInstanceOf(IllegalArgumentException.class);
         }
 
-        @DisplayName("폰이 공격할 수 없는 경우에 공격을 시도하면 예외가 발생한다.")
-        @Test
-        void occurExceptionIfPawnTriesInvalidAttack() {
-            final Board board = new Board(Map.of(
-                    new Square(File.b, Rank.THREE), new Piece(PieceType.PAWN, PieceColor.WHITE),
-                    new Square(File.c, Rank.FOUR), new Piece(PieceType.EMPTY, PieceColor.NONE)));
-            final Square source = new Square(File.b, Rank.THREE);
-            final Square target = new Square(File.c, Rank.FOUR);
-            final PieceColor turn = PieceColor.WHITE;
-
-            assertThatThrownBy(() -> board.move(source, target, turn))
-                    .isInstanceOf(IllegalArgumentException.class);
-        }
-
         @DisplayName("이동 경로에 다른 기물이 있으면 예외가 발생한다.")
         @Test
         void occurExceptionWhenExistObstacleOnPath() {
