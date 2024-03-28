@@ -14,8 +14,8 @@
 
 - [x] 체스판의 크기는 `8 x 8`이다.
 - [x] 체스판에서 말의 위치 값은 다음과 같이 구현한다.
-    - 가로 위치는 왼쪽부터 오른쪽으로 `a ~ h`
-    - 세로 위치는 아래부터 위로 `1 ~ 8`
+    - 가로 위치는 왼쪽에서 오른쪽으로 `a ~ h`
+    - 세로 위치는 아래에서 위로 `1 ~ 8`
 - [x] 체스판에서 각 진영은 검은색(대문자)과 흰색(소문자) 편으로 구분한다.
 - [x] 게임 시작 시 검은색 말은 `7 ~ 8` 행에 위치 하고, 흰색 말은 `1 ~ 2` 행에 위치 한다.
 - [x] 각 기물의 초기 위치는 아래와 같다.
@@ -41,97 +41,26 @@
 
 ### 🕹️ 체스 게임
 
+#### 게임 진행
+
 - [x] 사용자에게 커맨드를 입력 받는다.
     - [x] `start`를 입력 받으면 게임을 시작한다.
         - [x] 게임 시작 시 초기 보드를 출력한다.
     - [x] `move source위치 target위치`를 입력 받으면 기물은 이동한다.
         - [x] 출발지와 목적지를 보드에게 전달하여 이동을 요청한다.
     - [x] `end`를 입력 받으면 게임을 종료한다.
+    - [ ] `status`를 입력 받으면 게임 결과를 출력한다.
 
----
+#### 게임 결과 산출
 
-## 📦 프로젝트 구조
+- [ ] `end`를 입력 받지 않아도 킹이 잡히면 게임을 종료한다.
+- [ ] 각 진영의 점수와, 이긴 진영을 산출한다.
+- [ ] 점수 계산 규칙
+    - 현재 남아 있는 말에 대한 점수를 구한다.
+    - 한 번에 한 쪽의 점수만을 계산해야 한다.
+    - 각 말의 점수는 queen은 9점, rook은 5점, bishop은 3점, knight는 2.5점이다.
+    - pawn의 기본 점수는 1점이다.
+        - 하지만 같은 세로줄에 같은 색의 폰이 있는 경우 1점이 아닌 0.5점을 준다.
 
-<table>
-    <tr>
-        <th>Package</th>
-        <th>Class</th>
-        <th>Description</th>
-    </tr>
-    <tr>
-        <td>
-            <img src="https://raw.githubusercontent.com/mallowigi/iconGenerator/master/assets/icons/folders/controllers.svg?sanitize=true"/>
-            <b> controller</b>
-        </td>
-        <td><b>ChessGame</b></td>
-        <td>입력을 받아 게임 전체 진행을 담당하는 클래스</td>
-    </tr>
-    <tr>
-        <td rowspan="2">
-            <img src="https://raw.githubusercontent.com/mallowigi/iconGenerator/master/assets/icons/folders/home.svg?sanitize=true"/>
-            <b> domain / board</b>
-        </td>
-        <td><b>Board</b></td>
-        <td>기물들을 올려둘 수 있는 체스판</td>
-    </tr>
-    <tr>
-        <td><b>BoardFactory</b></td>
-        <td>흑백 기물들을 초기 위치에 두어 체스판을 생성하는 팩토리 클래스</td>
-    </tr>
-    <tr>
-        <td rowspan="4">
-            <img src="https://raw.githubusercontent.com/mallowigi/iconGenerator/master/assets/icons/folders/home.svg?sanitize=true"/>
-            <b> domain / piece</b>
-        </td>
-        <td><b>Piece</b></td>
-        <td>기물 추상 클래스</td></td>
-    </tr>
-    <tr>
-        <td><b>Bishop, King, Knight, Pawn, Queen, Rook</b></td>
-        <td>각자의 팀 색상을 가지며 이동 조건에 따라 움직임 여부를 판단하는 기물 구현체 클래스</td>
-    </tr>
-    <tr>
-        <td><b>PieceType</b></td>
-        <td>각 기물들을 상징하는 상수</td>
-    </tr>
-    <tr>
-        <td><b>Team</b></td>
-        <td>체스 게임에 존재하는 두 가지 팀 상수</td>
-    </tr>
-    <tr>
-        <td rowspan="3">
-            <img src="https://raw.githubusercontent.com/mallowigi/iconGenerator/master/assets/icons/folders/home.svg?sanitize=true"/>
-            <b> domain / square</b>
-        </td>
-        <td><b>File</b></td>
-        <td>체스판의 열을 의미하는 클래스</td>
-    </tr>
-    <tr>
-        <td><b>Rank</b></td>
-        <td>채스판의 행을 의미하는 클래스</td>
-    </tr>
-    <tr>
-        <td><b>Sqaure</b></td>
-        <td>체스판 한칸을 의미하는 클래스</td>
-    </tr>
-    <tr>
-        <td rowspan="4">
-            <img src="https://raw.githubusercontent.com/mallowigi/iconGenerator/master/assets/icons/folders/views.svg?sanitize=true"/>
-            <b> view</b>
-        </td>
-        <td><b>Command</b></td>
-        <td>사용자 입력에 따른 명령어 상수</td>
-    </tr>
-    <tr>
-        <td><b>InputView</b></td>
-        <td>전체적인 입력을 담당하는 뷰</td>
-    </tr>
-    <tr>
-        <td><b>OutputView</b></td>
-        <td>전체적인 출력을 담당하는 뷰</td>
-    </tr>
-    <tr>
-        <td><b>PieceMapper</b></td>
-        <td>기물 타입을 이름으로 변환해주는 상수</td>
-    </tr>
-</table>
+
+
