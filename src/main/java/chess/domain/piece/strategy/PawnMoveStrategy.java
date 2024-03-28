@@ -2,6 +2,7 @@ package chess.domain.piece.strategy;
 
 import chess.domain.board.Board;
 import chess.domain.piece.Piece;
+import chess.domain.piece.PieceColor;
 import chess.domain.square.Square;
 
 public class PawnMoveStrategy implements MoveStrategy {
@@ -28,7 +29,7 @@ public class PawnMoveStrategy implements MoveStrategy {
     private boolean isBackward(final Board board, final Square source, final Square target) {
         Piece sourcePiece = board.findPieceBySquare(source);
 
-        if (sourcePiece.isBlack()) {
+        if (sourcePiece.isSameColor(PieceColor.BLACK)) {
             return source.calculateRankDirection(target) < 0;
         }
         return source.calculateRankDirection(target) > 0;

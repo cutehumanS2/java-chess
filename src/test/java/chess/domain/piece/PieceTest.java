@@ -49,7 +49,7 @@ class PieceTest {
     void checkPieceColorIsBlack(final PieceColor other, final boolean expected) {
         final Piece piece = new Piece(PieceType.ROOK, other);
 
-        final boolean actual = piece.isBlack();
+        final boolean actual = piece.isSameColor(PieceColor.BLACK);
 
         assertThat(actual).isEqualTo(expected);
     }

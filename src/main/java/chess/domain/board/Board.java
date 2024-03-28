@@ -90,7 +90,7 @@ public class Board {
 
     public double calculateScoreWithoutPawn(final PieceColor color) {
         return pieces.values().stream()
-                .filter(piece -> !piece.isPawn())
+                .filter(piece -> !piece.isSameType(PieceType.PAWN))
                 .filter(piece -> piece.isSameColor(color))
                 .mapToDouble(piece -> piece.getType().getScore())
                 .sum();
@@ -105,7 +105,7 @@ public class Board {
 
     private Map<File, List<Piece>> findPawnsByFile(final PieceColor pawnColor) {
         return pieces.entrySet().stream()
-                .filter(piece -> piece.getValue().isPawn())
+                .filter(piece -> piece.getValue().isSameType(PieceType.PAWN))
                 .filter(piece -> piece.getValue().isSameColor(pawnColor))
                 .collect(Collectors.groupingBy(piece -> piece.getKey().file(),
                         Collectors.mapping(Map.Entry::getValue, Collectors.toList())));
@@ -121,6 +121,14 @@ public class Board {
 
     private Piece getPawn(List<Piece> pawns) {
         return pawns.get(0);
+    }
+
+    public PieceColor findFinalWinnerTeam() {
+        return pieces.values().stream()
+                .filter(piece -> piece.isSameType(PieceType.KING))
+                .findAny()
+                .orElseThrow(() -> new IllegalStateException("현재 보드에 남아 있는 킹이 없습니다."))
+                .getColor();
     }
 
     public Map<Square, Piece> getPieces() {

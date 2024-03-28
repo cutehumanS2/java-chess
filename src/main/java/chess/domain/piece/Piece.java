@@ -21,16 +21,12 @@ public class Piece {
         return color == other;
     }
 
-    public boolean isBlack() {
-        return color == PieceColor.BLACK;
-    }
-
     public boolean isNotEmpty() {
         return type != PieceType.EMPTY;
     }
 
-    public boolean isPawn() {
-        return type == PieceType.PAWN;
+    public boolean isSameType(final PieceType other) {
+        return type == other;
     }
 
     public double getScore() {

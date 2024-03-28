@@ -156,4 +156,29 @@ class BoardTest {
             assertThat(actual).isEqualTo(2);
         }
     }
+
+    @DisplayName("한쪽 진영의 킹이 잡혀서 게임이 종료된 경우, 이긴 진영을 구한다.")
+    @ParameterizedTest
+    @CsvSource({"WHITE", "BLACK"})
+    void findFinalWinnerTeam(final PieceColor kingColor) {
+        final Board board = new Board(Map.of(
+                new Square(File.d, Rank.FOUR), new Piece(PieceType.KING, kingColor),
+                new Square(File.e, Rank.FIVE), new Piece(PieceType.PAWN, PieceColor.BLACK)
+        ));
+
+        final PieceColor actual = board.findFinalWinnerTeam();
+
+        assertThat(actual).isEqualTo(kingColor);
+    }
+
+    @DisplayName("양쪽 진영 모두 킹이 없는 경우, 예외가 발생한다.")
+    @Test
+    void occurExceptionWhenNoKingOnBoard() {
+        final Board board = new Board(Map.of(
+                new Square(File.e, Rank.FIVE), new Piece(PieceType.PAWN, PieceColor.BLACK)
+        ));
+
+        assertThatThrownBy(board::findFinalWinnerTeam)
+                .isInstanceOf(IllegalStateException.class);
+    }
 }
