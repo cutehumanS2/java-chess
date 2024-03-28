@@ -13,22 +13,28 @@ import chess.domain.square.Square;
 
 public enum PieceType {
 
-    KING(new KingMoveStrategy()),
-    QUEEN(new QueenMoveStrategy()),
-    ROOK(new RookMoveStrategy()),
-    BISHOP(new BishopMoveStrategy()),
-    KNIGHT(new KnightStrategy()),
-    PAWN(new PawnMoveStrategy()),
-    EMPTY(new EmptyStrategy()),
+    KING(new KingMoveStrategy(), 0),
+    QUEEN(new QueenMoveStrategy(), 9),
+    ROOK(new RookMoveStrategy(), 5),
+    BISHOP(new BishopMoveStrategy(), 3),
+    KNIGHT(new KnightStrategy(), 2.5),
+    PAWN(new PawnMoveStrategy(), 1),
+    EMPTY(new EmptyStrategy(), 0),
     ;
 
     private final MoveStrategy moveStrategy;
+    private final double score;
 
-    PieceType(final MoveStrategy moveStrategy) {
+    PieceType(MoveStrategy moveStrategy, double score) {
         this.moveStrategy = moveStrategy;
+        this.score = score;
     }
 
     public boolean canMove(final Board board, final Square source, final Square target) {
         return moveStrategy.canMove(board, source, target);
+    }
+
+    public double getScore() {
+        return score;
     }
 }

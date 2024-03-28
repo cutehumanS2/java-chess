@@ -3,12 +3,14 @@ package chess.domain.board;
 import chess.domain.piece.Piece;
 import chess.domain.piece.PieceColor;
 import chess.domain.piece.PieceType;
+import chess.domain.square.File;
 import chess.domain.square.Square;
 
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 public class Board {
 
@@ -80,6 +82,45 @@ public class Board {
         final Piece sourcePiece = findPieceBySquare(source);
         pieces.replace(source, new Piece(PieceType.EMPTY, PieceColor.NONE));
         pieces.replace(target, sourcePiece);
+    }
+
+    public double calculateTotalScore(final PieceColor color) {
+        return calculateScoreWithoutPawn(color) + calculatePawnScore(color);
+    }
+
+    public double calculateScoreWithoutPawn(final PieceColor color) {
+        return pieces.values().stream()
+                .filter(piece -> !piece.isPawn())
+                .filter(piece -> piece.isSameColor(color))
+                .mapToDouble(piece -> piece.getType().getScore())
+                .sum();
+    }
+
+    public double calculatePawnScore(final PieceColor pawnColor) {
+        Map<File, List<Piece>> pawnsByFile = findPawnsByFile(pawnColor);
+        return pawnsByFile.values().stream()
+                .mapToDouble((pawns) -> calculatePawnScoreByCount(pawns.size(), getPawn(pawns)))
+                .sum();
+    }
+
+    private Map<File, List<Piece>> findPawnsByFile(final PieceColor pawnColor) {
+        return pieces.entrySet().stream()
+                .filter(piece -> piece.getValue().isPawn())
+                .filter(piece -> piece.getValue().isSameColor(pawnColor))
+                .collect(Collectors.groupingBy(piece -> piece.getKey().file(),
+                        Collectors.mapping(Map.Entry::getValue, Collectors.toList())));
+    }
+
+    private double calculatePawnScoreByCount(final long count, final Piece pawn) {
+        double pawnBasicScore = pawn.getScore();
+        if (count > 1) {
+            return (pawnBasicScore * count) / 2;
+        }
+        return pawnBasicScore * count;
+    }
+
+    private Piece getPawn(List<Piece> pawns) {
+        return pawns.get(0);
     }
 
     public Map<Square, Piece> getPieces() {

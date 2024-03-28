@@ -29,6 +29,14 @@ public class Piece {
         return type != PieceType.EMPTY;
     }
 
+    public boolean isPawn() {
+        return type == PieceType.PAWN;
+    }
+
+    public double getScore() {
+        return type.getScore();
+    }
+
     public PieceType getType() {
         return type;
     }
