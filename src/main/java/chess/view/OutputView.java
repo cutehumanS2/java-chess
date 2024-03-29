@@ -53,4 +53,8 @@ public class OutputView {
     private static void printWinnerTeam(final PieceColor teamColor) {
         System.out.println("> 승리 진영 : " + ColorMapper.findNameByColor(teamColor) + System.lineSeparator());
     }
+
+    public static void printErrorMessage(final String message) {
+        System.out.println("> " + message);
+    }
 }
