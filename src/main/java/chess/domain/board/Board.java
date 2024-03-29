@@ -17,7 +17,7 @@ public class Board {
     private static final String ERROR_SAME_SQUARE = "기물의 출발지와 목적지는 달라야 합니다.";
     private static final String ERROR_NOT_EXIST_PIECE = "해당 위치에 기물이 존재하지 않습니다.";
     private static final String ERROR_MOVE_NOT_AVAILABLE = "해당 위치로 기물을 이동할 수 없습니다.";
-    private static final String ERROR_IS_NOT_TURN = "본인 팀의 기물만 이동할 수 있습니다.";
+    private static final String ERROR_IS_NOT_TURN = "본인 진영의 기물만 이동할 수 있습니다.";
     public static final int INITIAL_KING_COUNT = 2;
 
     private final Map<Square, Piece> pieces;
@@ -89,7 +89,7 @@ public class Board {
         return calculateScoreWithoutPawn(color) + calculatePawnScore(color);
     }
 
-    public double calculateScoreWithoutPawn(final PieceColor color) {
+    private double calculateScoreWithoutPawn(final PieceColor color) {
         return pieces.values().stream()
                 .filter(piece -> !piece.isSameType(PieceType.PAWN))
                 .filter(piece -> piece.isSameColor(color))
@@ -97,7 +97,7 @@ public class Board {
                 .sum();
     }
 
-    public double calculatePawnScore(final PieceColor pawnColor) {
+    private double calculatePawnScore(final PieceColor pawnColor) {
         final Map<File, List<Piece>> pawnsByFile = findPawnsByFile(pawnColor);
         return pawnsByFile.values().stream()
                 .mapToDouble((pawns) -> calculatePawnScoreByCount(pawns.size(), getPawn(pawns)))
@@ -131,7 +131,7 @@ public class Board {
         return findCurrentWinnerTeam();
     }
 
-    private boolean isGameOver() {
+    public boolean isGameOver() {
         final long kingCount = countKingOnBoard();
         return kingCount < INITIAL_KING_COUNT;
     }

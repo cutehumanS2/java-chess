@@ -1,9 +1,10 @@
-package chess.view;
+package chess.view.mapper;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 import chess.domain.piece.PieceColor;
 import chess.domain.piece.PieceType;
+import chess.view.mapper.PieceMapper;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 

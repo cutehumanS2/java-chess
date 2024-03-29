@@ -26,10 +26,10 @@ public class ChessGame {
         final String commandInput = InputView.readCommand();
         final Command command = Command.findByValue(commandInput);
 
-        if (command.isEnd()) {
+        if (command == Command.END) {
             return;
         }
-        if (command.isMove()) {
+        if (command == Command.MOVE || command == Command.STATUS) {
             throw new IllegalStateException("게임을 먼저 시작해 주세요.");
         }
 
@@ -42,12 +42,25 @@ public class ChessGame {
         PieceColor turn = PieceColor.WHITE;
         String commandInput = InputView.readCommand();
         Command command = Command.findByValue(commandInput);
-        if (command.isStart()) {
+        if (command == Command.START) {
             throw new IllegalStateException("이미 게임이 시작되었습니다.");
         }
 
-        while (command.isNotEnd()) {
-            turn = playTurn(board, commandInput, turn);
+        while (command != Command.END) {
+            if (command == Command.STATUS) {
+                OutputView.printGameStatus(board.findWinnerTeam(), board.calculateTotalScore(PieceColor.WHITE),
+                        board.calculateTotalScore(PieceColor.BLACK));
+            }
+            if (command == Command.MOVE) {
+                turn = playTurn(board, commandInput, turn);
+
+                if (board.isGameOver()) {
+                    OutputView.printGameStatus(board.findWinnerTeam(), board.calculateTotalScore(PieceColor.WHITE),
+                            board.calculateTotalScore(PieceColor.BLACK));
+                    command = Command.END;
+                    return;
+                }
+            }
             commandInput = InputView.readCommand();
             command = Command.findByValue(commandInput);
         }
