@@ -157,28 +157,49 @@ class BoardTest {
         }
     }
 
-    @DisplayName("한쪽 진영의 킹이 잡혀서 게임이 종료된 경우, 이긴 진영을 구한다.")
-    @ParameterizedTest
-    @CsvSource({"WHITE", "BLACK"})
-    void findFinalWinnerTeam(final PieceColor kingColor) {
-        final Board board = new Board(Map.of(
-                new Square(File.d, Rank.FOUR), new Piece(PieceType.KING, kingColor),
-                new Square(File.e, Rank.FIVE), new Piece(PieceType.PAWN, PieceColor.BLACK)
-        ));
+    @Nested
+    class findWinnerTest {
 
-        final PieceColor actual = board.findFinalWinnerTeam();
+        @DisplayName("한쪽 진영의 킹이 잡혀서 게임이 종료된 경우, 이긴 진영을 구한다.")
+        @ParameterizedTest
+        @CsvSource({"WHITE", "BLACK"})
+        void findFinalWinnerTeam(final PieceColor kingColor) {
+            final Board board = new Board(Map.of(
+                    new Square(File.d, Rank.FOUR), new Piece(PieceType.KING, kingColor),
+                    new Square(File.e, Rank.FIVE), new Piece(PieceType.PAWN, PieceColor.BLACK)
+            ));
 
-        assertThat(actual).isEqualTo(kingColor);
-    }
+            final PieceColor actual = board.findWinnerTeam();
 
-    @DisplayName("양쪽 진영 모두 킹이 없는 경우, 예외가 발생한다.")
-    @Test
-    void occurExceptionWhenNoKingOnBoard() {
-        final Board board = new Board(Map.of(
-                new Square(File.e, Rank.FIVE), new Piece(PieceType.PAWN, PieceColor.BLACK)
-        ));
+            assertThat(actual).isEqualTo(kingColor);
+        }
 
-        assertThatThrownBy(board::findFinalWinnerTeam)
-                .isInstanceOf(IllegalStateException.class);
+        @DisplayName("현재 이기고 있는 진영을 구한다.")
+        @ParameterizedTest
+        @CsvSource({"QUEEN, WHITE, WHITE", "QUEEN, BLACK, BLACK", "EMPTY, NONE, NONE"})
+        void findCurrentWinnerTeam(final PieceType type, final PieceColor color, final PieceColor expected) {
+            final Board board = new Board(Map.of(
+                    new Square(File.d, Rank.FOUR), new Piece(type, color),
+                    new Square(File.e, Rank.FIVE), new Piece(PieceType.PAWN, PieceColor.BLACK),
+                    new Square(File.e, Rank.SIX), new Piece(PieceType.KING, PieceColor.BLACK),
+                    new Square(File.f, Rank.FIVE), new Piece(PieceType.PAWN, PieceColor.WHITE),
+                    new Square(File.f, Rank.SIX), new Piece(PieceType.KING, PieceColor.WHITE)
+            ));
+
+            final PieceColor actual = board.findWinnerTeam();
+
+            assertThat(actual).isEqualTo(expected);
+        }
+
+        @DisplayName("양쪽 진영 모두 킹이 없는 경우, 예외가 발생한다.")
+        @Test
+        void occurExceptionWhenNoKingOnBoard() {
+            final Board board = new Board(Map.of(
+                    new Square(File.e, Rank.FIVE), new Piece(PieceType.PAWN, PieceColor.BLACK)
+            ));
+
+            assertThatThrownBy(board::findWinnerTeam)
+                    .isInstanceOf(IllegalStateException.class);
+        }
     }
 }

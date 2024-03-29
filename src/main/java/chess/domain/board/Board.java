@@ -18,6 +18,7 @@ public class Board {
     private static final String ERROR_NOT_EXIST_PIECE = "해당 위치에 기물이 존재하지 않습니다.";
     private static final String ERROR_MOVE_NOT_AVAILABLE = "해당 위치로 기물을 이동할 수 없습니다.";
     private static final String ERROR_IS_NOT_TURN = "본인 팀의 기물만 이동할 수 있습니다.";
+    public static final int INITIAL_KING_COUNT = 2;
 
     private final Map<Square, Piece> pieces;
 
@@ -97,7 +98,7 @@ public class Board {
     }
 
     public double calculatePawnScore(final PieceColor pawnColor) {
-        Map<File, List<Piece>> pawnsByFile = findPawnsByFile(pawnColor);
+        final Map<File, List<Piece>> pawnsByFile = findPawnsByFile(pawnColor);
         return pawnsByFile.values().stream()
                 .mapToDouble((pawns) -> calculatePawnScoreByCount(pawns.size(), getPawn(pawns)))
                 .sum();
@@ -112,7 +113,7 @@ public class Board {
     }
 
     private double calculatePawnScoreByCount(final long count, final Piece pawn) {
-        double pawnBasicScore = pawn.getScore();
+        final double pawnBasicScore = pawn.getScore();
         if (count > 1) {
             return (pawnBasicScore * count) / 2;
         }
@@ -123,12 +124,42 @@ public class Board {
         return pawns.get(0);
     }
 
-    public PieceColor findFinalWinnerTeam() {
+    public PieceColor findWinnerTeam() {
+        if (isGameOver()) {
+            return findFinalWinnerTeam();
+        }
+        return findCurrentWinnerTeam();
+    }
+
+    private boolean isGameOver() {
+        final long kingCount = countKingOnBoard();
+        return kingCount < INITIAL_KING_COUNT;
+    }
+
+    private long countKingOnBoard() {
+        return pieces.values().stream()
+                .filter(piece -> piece.isSameType(PieceType.KING))
+                .count();
+    }
+
+    private PieceColor findFinalWinnerTeam() {
         return pieces.values().stream()
                 .filter(piece -> piece.isSameType(PieceType.KING))
                 .findAny()
                 .orElseThrow(() -> new IllegalStateException("현재 보드에 남아 있는 킹이 없습니다."))
                 .getColor();
+    }
+
+    private PieceColor findCurrentWinnerTeam() {
+        final double blackTeamScore = calculateTotalScore(PieceColor.BLACK);
+        final double whiteTeamScore = calculateTotalScore(PieceColor.WHITE);
+        if (blackTeamScore > whiteTeamScore) {
+            return PieceColor.BLACK;
+        }
+        if (blackTeamScore < whiteTeamScore) {
+            return PieceColor.WHITE;
+        }
+        return PieceColor.NONE;
     }
 
     public Map<Square, Piece> getPieces() {
