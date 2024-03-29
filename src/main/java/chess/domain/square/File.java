@@ -57,8 +57,4 @@ public enum File {
                 .findAny()
                 .orElseThrow(() -> new IllegalArgumentException(value + ERROR_NOT_EXIST_FILE));
     }
-
-    public int getIndex() {
-        return index;
-    }
 }

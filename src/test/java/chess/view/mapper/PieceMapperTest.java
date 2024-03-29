@@ -4,16 +4,19 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import chess.domain.piece.PieceColor;
 import chess.domain.piece.PieceType;
-import chess.view.mapper.PieceMapper;
 import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvSource;
 
 class PieceMapperTest {
 
-    @Test
-    @DisplayName("흑색 기물일 때 대문자로 변환한다.")
-    void mapToUpperCaseWhenBlackPiece() {
-        final Character actual = PieceMapper.map(PieceType.KNIGHT, PieceColor.BLACK);
-        assertThat(actual).isEqualTo('N');
+    @DisplayName("기물의 타입과 색상에 따른 출력명을 리턴한다.")
+    @ParameterizedTest
+    @CsvSource({"PAWN, BLACK, P", "PAWN, WHITE, p"})
+    void returnViewNameByPieceTypeAndPieceColor(final PieceType type, final PieceColor color, final String expected) {
+        final String actual = PieceMapper.findNameByTypeAndColor(type, color);
+
+        assertThat(actual).isEqualTo(expected);
     }
+
 }

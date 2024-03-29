@@ -65,4 +65,14 @@ class RankTest {
 
         assertThat(actual).containsExactlyInAnyOrder(Rank.TWO, Rank.THREE);
     }
+
+    @DisplayName("인덱스에 해당하는 Rank를 찾는다.")
+    @Test
+    void findRankByIndex() {
+        final int index = 8;
+
+        Rank actual = Rank.findByIndex(index);
+
+        assertThat(actual).isEqualTo(Rank.EIGHT);
+    }
 }
