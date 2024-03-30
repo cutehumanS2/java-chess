@@ -58,7 +58,7 @@ public class ChessGameController {
             OutputView.printBoard(game.getPieces());
         }
 
-        OutputView.printGameStatus(gameStatus.findWinnerTeam(), gameStatus.calculateTotalScore(PieceColor.WHITE),
+        OutputView.printFinalGameResult(gameStatus.findWinnerTeam(), gameStatus.calculateTotalScore(PieceColor.WHITE),
                 gameStatus.calculateTotalScore(PieceColor.BLACK));
     }
 
@@ -71,11 +71,7 @@ public class ChessGameController {
                     gameStatus.calculateTotalScore(PieceColor.BLACK));
         }
         if (command == Command.MOVE) {
-            move(game, commandInput);
-
-            if (gameStatus.isGameOver()) {
-                return Command.END;
-            }
+            command = move(game, gameStatus, commandInput);
         }
         return command;
     }
@@ -92,11 +88,16 @@ public class ChessGameController {
         }
     }
 
-    private void move(final ChessGame game, final String commandInput) {
+    private Command move(final ChessGame game, final GameStatus gameStatus, final String commandInput) {
         final List<String> splitCommand = List.of(commandInput.split(MOVE_COMMAND_DELIMITER));
         final Square source = createSquare(splitCommand.get(SOURCE_SQUARE_INDEX));
         final Square target = createSquare(splitCommand.get(TARGET_SQUARE_INDEX));
         game.move(source, target);
+
+        if (gameStatus.isGameOver()) {
+            return Command.END;
+        }
+        return Command.MOVE;
     }
 
     private Square createSquare(final String commandInput) {

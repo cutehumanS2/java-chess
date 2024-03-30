@@ -54,6 +54,21 @@ public class OutputView {
         System.out.println("> 승리 진영 : " + ColorMapper.findNameByColor(teamColor) + System.lineSeparator());
     }
 
+    public static void printFinalGameResult(
+            final PieceColor winnerTeamColor, final double whiteTeamScore, final double blackTeamScore) {
+        printGameOverMessage();
+        printGameStatus(winnerTeamColor, whiteTeamScore, blackTeamScore);
+        printFinalWinnerTeam(winnerTeamColor);
+    }
+
+    private static void printGameOverMessage() {
+        System.out.println("> 킹이 잡혀 게임을 종료합니다.");
+    }
+
+    private static void printFinalWinnerTeam(final PieceColor teamColor) {
+        System.out.println("> 최종 승리 진영은 " + ColorMapper.findNameByColor(teamColor) + " 진영입니다.");
+    }
+
     public static void printErrorMessage(final String message) {
         System.out.println("> " + message);
     }
