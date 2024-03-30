@@ -22,8 +22,12 @@ public enum PieceMapper {
 
     public static String findNameByTypeAndColor(final PieceType pieceType, final PieceColor pieceColor) {
         if (pieceColor == PieceColor.BLACK) {
-            return valueOf(pieceType.name()).name.toUpperCase();
+            return findNameByType(pieceType).toUpperCase();
         }
+        return findNameByType(pieceType);
+    }
+
+    private static String findNameByType(final PieceType pieceType) {
         return valueOf(pieceType.name()).name;
     }
 }

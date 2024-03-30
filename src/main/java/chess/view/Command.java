@@ -21,16 +21,20 @@ public enum Command {
 
     public static Command findByValue(final String value) {
         return Arrays.stream(values())
-                .filter(command -> command.format.matcher(value).matches())
+                .filter(command -> command.isMatchedCommandFormat(command.format, value))
                 .findAny()
                 .orElseThrow(() -> new IllegalArgumentException(value + ERROR_INVALID_COMMAND));
     }
 
     public static void validateFormat(final String value) {
         boolean isInValidFormat = Arrays.stream(values())
-                .noneMatch(command -> command.format.matcher(value).matches());
+                .noneMatch(command -> command.isMatchedCommandFormat(command.format, value));
         if (isInValidFormat) {
             throw new IllegalArgumentException(value + ERROR_INVALID_COMMAND);
         }
+    }
+
+    private boolean isMatchedCommandFormat(final Pattern format, final String value) {
+        return format.matcher(value).matches();
     }
 }
