@@ -45,10 +45,6 @@ public class Board {
         }
     }
 
-    public Piece findPieceBySquare(final Square square) {
-        return pieces.getOrDefault(square, new Piece(PieceType.EMPTY, PieceColor.NONE));
-    }
-
     private void validateIsNotTurn(final Square source, final PieceColor turn) {
         final Piece sourcePiece = findPieceBySquare(source);
         if (!sourcePiece.isSameColor(turn)) {
@@ -80,6 +76,10 @@ public class Board {
         final Piece sourcePiece = findPieceBySquare(source);
         pieces.replace(source, new Piece(PieceType.EMPTY, PieceColor.NONE));
         pieces.replace(target, sourcePiece);
+    }
+
+    public Piece findPieceBySquare(final Square square) {
+        return pieces.getOrDefault(square, new Piece(PieceType.EMPTY, PieceColor.NONE));
     }
 
 

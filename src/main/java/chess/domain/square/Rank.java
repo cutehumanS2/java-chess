@@ -42,6 +42,13 @@ public enum Rank {
         }
     }
 
+    public static Rank findByIndex(final int index) {
+        return Arrays.stream(values())
+                .filter(rank -> rank.index == index)
+                .findAny()
+                .orElseThrow(() -> new IllegalArgumentException(index + ERROR_NOT_EXIST_RANK));
+    }
+
     public int calculateDistance(final Rank other) {
         return Math.abs(index - other.index);
     }
@@ -60,12 +67,5 @@ public enum Rank {
         }
 
         return rankPath;
-    }
-
-    public static Rank findByIndex(final int index) {
-        return Arrays.stream(values())
-                .filter(rank -> rank.index == index)
-                .findAny()
-                .orElseThrow(() -> new IllegalArgumentException(index + ERROR_NOT_EXIST_RANK));
     }
 }
