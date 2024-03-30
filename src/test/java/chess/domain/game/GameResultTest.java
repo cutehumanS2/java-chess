@@ -17,7 +17,7 @@ import org.junit.jupiter.params.provider.CsvSource;
 
 import java.util.Map;
 
-class GameStatusTest {
+class GameResultTest {
 
     @Nested
     class calculateTotalScoreTest {
@@ -26,7 +26,7 @@ class GameStatusTest {
         @ParameterizedTest
         @CsvSource({"WHITE, 20.5", "BLACK, 19"})
         void calculateScore(final PieceColor color, final double expected) {
-            final GameStatus gameStatus = new GameStatus(Map.of(
+            final GameResult gameResult = new GameResult(Map.of(
                     new Square(File.e, Rank.FOUR), new Piece(PieceType.QUEEN, PieceColor.WHITE),
                     new Square(File.c, Rank.THREE), new Piece(PieceType.ROOK, PieceColor.WHITE),
                     new Square(File.b, Rank.THREE), new Piece(PieceType.BISHOP, PieceColor.WHITE),
@@ -39,7 +39,7 @@ class GameStatusTest {
                     new Square(File.f, Rank.FIVE), new Piece(PieceType.PAWN, PieceColor.BLACK)
             ));
 
-            final double actual = gameStatus.calculateTotalScore(color);
+            final double actual = gameResult.calculateTotalScore(color);
 
             assertThat(actual).isEqualTo(expected);
         }
@@ -47,12 +47,12 @@ class GameStatusTest {
         @DisplayName("같은 세로줄에 같은 색의 폰이 있는 경우, 각 폰의 점수를 0.5로 계산한다.")
         @Test
         void calculateScoreWhenPawnCountIsMoreThanOneOnSameFile() {
-            final GameStatus gameStatus = new GameStatus(Map.of(
+            final GameResult gameResult = new GameResult(Map.of(
                     new Square(File.e, Rank.FOUR), new Piece(PieceType.PAWN, PieceColor.WHITE),
                     new Square(File.e, Rank.FIVE), new Piece(PieceType.PAWN, PieceColor.WHITE)
             ));
 
-            final double actual = gameStatus.calculateTotalScore(PieceColor.WHITE);
+            final double actual = gameResult.calculateTotalScore(PieceColor.WHITE);
 
             assertThat(actual).isEqualTo(1);
         }
@@ -60,12 +60,12 @@ class GameStatusTest {
         @DisplayName("세로줄 당 폰이 하나씩만 있는 경우, 각 폰의 점수를 1로 계산한다.")
         @Test
         void calculateScoreWhenPawnCountIsOneOnSameFile() {
-            final GameStatus gameStatus = new GameStatus(Map.of(
+            final GameResult gameResult = new GameResult(Map.of(
                     new Square(File.d, Rank.FOUR), new Piece(PieceType.PAWN, PieceColor.WHITE),
                     new Square(File.e, Rank.FIVE), new Piece(PieceType.PAWN, PieceColor.WHITE)
             ));
 
-            final double actual = gameStatus.calculateTotalScore(PieceColor.WHITE);
+            final double actual = gameResult.calculateTotalScore(PieceColor.WHITE);
 
             assertThat(actual).isEqualTo(2);
         }
@@ -78,12 +78,12 @@ class GameStatusTest {
         @ParameterizedTest
         @CsvSource({"WHITE", "BLACK"})
         void findFinalWinnerTeam(final PieceColor kingColor) {
-            final GameStatus gameStatus = new GameStatus(Map.of(
+            final GameResult gameResult = new GameResult(Map.of(
                     new Square(File.d, Rank.FOUR), new Piece(PieceType.KING, kingColor),
                     new Square(File.e, Rank.FIVE), new Piece(PieceType.PAWN, PieceColor.BLACK)
             ));
 
-            final PieceColor actual = gameStatus.findWinnerTeam();
+            final PieceColor actual = gameResult.findWinnerTeam();
 
             assertThat(actual).isEqualTo(kingColor);
         }
@@ -92,7 +92,7 @@ class GameStatusTest {
         @ParameterizedTest
         @CsvSource({"QUEEN, WHITE, WHITE", "QUEEN, BLACK, BLACK", "EMPTY, NONE, NONE"})
         void findCurrentWinnerTeam(final PieceType type, final PieceColor color, final PieceColor expected) {
-            final GameStatus gameStatus = new GameStatus(Map.of(
+            final GameResult gameResult = new GameResult(Map.of(
                     new Square(File.d, Rank.FOUR), new Piece(type, color),
                     new Square(File.e, Rank.FIVE), new Piece(PieceType.PAWN, PieceColor.BLACK),
                     new Square(File.e, Rank.SIX), new Piece(PieceType.KING, PieceColor.BLACK),
@@ -100,7 +100,7 @@ class GameStatusTest {
                     new Square(File.f, Rank.SIX), new Piece(PieceType.KING, PieceColor.WHITE)
             ));
 
-            final PieceColor actual = gameStatus.findWinnerTeam();
+            final PieceColor actual = gameResult.findWinnerTeam();
 
             assertThat(actual).isEqualTo(expected);
         }
@@ -108,11 +108,11 @@ class GameStatusTest {
         @DisplayName("양쪽 진영 모두 킹이 없는 경우, 예외가 발생한다.")
         @Test
         void occurExceptionWhenNoKingOnGameStatus() {
-            final GameStatus gameStatus = new GameStatus(Map.of(
+            final GameResult gameResult = new GameResult(Map.of(
                     new Square(File.e, Rank.FIVE), new Piece(PieceType.PAWN, PieceColor.BLACK)
             ));
 
-            assertThatThrownBy(gameStatus::findWinnerTeam)
+            assertThatThrownBy(gameResult::findWinnerTeam)
                     .isInstanceOf(IllegalStateException.class);
         }
     }
@@ -123,13 +123,13 @@ class GameStatusTest {
         @DisplayName("현재 보드 위 킹의 개수가 초기 킹 개수보다 적으면 게임이 종료된다.")
         @Test
         void gameOverWhenCurrentKingCountIsNotSameInitialKingCount() {
-            final GameStatus gameStatus = new GameStatus(Map.of(
+            final GameResult gameResult = new GameResult(Map.of(
                     new Square(File.e, Rank.FIVE), new Piece(PieceType.PAWN, PieceColor.BLACK),
                     new Square(File.f, Rank.FIVE), new Piece(PieceType.PAWN, PieceColor.WHITE),
                     new Square(File.f, Rank.SIX), new Piece(PieceType.KING, PieceColor.WHITE)
             ));
 
-            boolean actual = gameStatus.isGameOver();
+            boolean actual = gameResult.isGameOver();
 
             assertThat(actual).isTrue();
         }
@@ -137,13 +137,13 @@ class GameStatusTest {
         @DisplayName("현재 보드 위 킹의 개수가 초기 킹 개수와 같으면 게임이 종료되지 않는다.")
         @Test
         void notGameOverWhenCurrentKingCountIsSameInitialKingCount() {
-            final GameStatus gameStatus = new GameStatus(Map.of(
+            final GameResult gameResult = new GameResult(Map.of(
                     new Square(File.e, Rank.FIVE), new Piece(PieceType.KING, PieceColor.BLACK),
                     new Square(File.f, Rank.FIVE), new Piece(PieceType.PAWN, PieceColor.WHITE),
                     new Square(File.f, Rank.SIX), new Piece(PieceType.KING, PieceColor.WHITE)
             ));
 
-            boolean actual = gameStatus.isGameOver();
+            boolean actual = gameResult.isGameOver();
 
             assertThat(actual).isFalse();
         }

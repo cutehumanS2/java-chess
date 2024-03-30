@@ -10,7 +10,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-public class GameStatus {
+public class GameResult {
 
     private static final int INITIAL_KING_COUNT = 2;
     private static final double PAWN_PENALTY_RATE = 0.5;
@@ -18,7 +18,7 @@ public class GameStatus {
 
     private final Map<Square, Piece> pieces;
 
-    public GameStatus(final Map<Square, Piece> pieces) {
+    public GameResult(final Map<Square, Piece> pieces) {
         this.pieces = pieces;
     }
 

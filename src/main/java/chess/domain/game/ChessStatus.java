@@ -5,16 +5,15 @@ import chess.domain.board.BoardFactory;
 import chess.domain.piece.Piece;
 import chess.domain.piece.PieceColor;
 import chess.domain.square.Square;
-import chess.view.Command;
 
 import java.util.Map;
 
-public class ChessGame {
+public class ChessStatus {
 
     private final Board board;
     private PieceColor turn;
 
-    public ChessGame(final PieceColor turn) {
+    public ChessStatus(final PieceColor turn) {
         this.board = BoardFactory.createBoard();
         this.turn = turn;
     }

@@ -39,7 +39,7 @@ public class OutputView {
                 .toList();
     }
 
-    public static void printGameStatus(
+    public static void printGameResult(
             final PieceColor winnerTeamColor, final double whiteTeamScore, final double blackTeamScore) {
         printScoreByColor(PieceColor.WHITE, whiteTeamScore);
         printScoreByColor(PieceColor.BLACK, blackTeamScore);
@@ -57,7 +57,7 @@ public class OutputView {
     public static void printFinalGameResult(
             final PieceColor winnerTeamColor, final double whiteTeamScore, final double blackTeamScore) {
         printGameOverMessage();
-        printGameStatus(winnerTeamColor, whiteTeamScore, blackTeamScore);
+        printGameResult(winnerTeamColor, whiteTeamScore, blackTeamScore);
         printFinalWinnerTeam(winnerTeamColor);
     }
 
