@@ -33,13 +33,6 @@ public class BoardFactory {
 
     public static Board createBoard() {
         final Map<Square, Piece> board = new HashMap<>();
-
-        for (Rank rank : Rank.values()) {
-            for (File file : File.values()) {
-                board.put(new Square(file, rank), new Piece(PieceType.EMPTY, PieceColor.NONE));
-            }
-        }
-
         board.putAll(createPiecesWithoutPawn(Rank.EIGHT, PieceColor.BLACK));
         board.putAll(createPieces(Rank.SEVEN, PieceType.PAWN, PieceColor.BLACK));
         board.putAll(createPieces(Rank.SIX, PieceType.EMPTY, PieceColor.NONE));

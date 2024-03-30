@@ -26,5 +26,4 @@ public class ChessGame {
     public Map<Square, Piece> getPieces() {
         return board.getPieces();
     }
-
 }
