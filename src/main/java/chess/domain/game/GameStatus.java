@@ -13,7 +13,7 @@ import java.util.stream.Collectors;
 public class GameStatus {
 
     private static final int INITIAL_KING_COUNT = 2;
-    private static final double PENALTY_RATE = 0.5;
+    private static final double PAWN_PENALTY_RATE = 0.5;
     private static final String ERROR_NOT_EXIST_KING = "현재 보드에 남아 있는 킹이 없습니다.";
 
     private final Map<Square, Piece> pieces;
@@ -27,38 +27,42 @@ public class GameStatus {
     }
 
     private double calculateScoreWithoutPawn(final PieceColor color) {
-        return pieces.values().stream()
+        return pieces.values()
+                .stream()
                 .filter(piece -> !piece.isSameType(PieceType.PAWN))
                 .filter(piece -> piece.isSameColor(color))
-                .mapToDouble(piece -> piece.getType().getScore())
+                .mapToDouble(Piece::getScore)
                 .sum();
     }
 
     private double calculatePawnScore(final PieceColor pawnColor) {
         final Map<File, List<Piece>> pawnsByFile = findPawnsByFile(pawnColor);
-        return pawnsByFile.values().stream()
-                .mapToDouble((pawns) -> calculatePawnScoreByCount(pawns.size(), getPawn(pawns)))
+        return pawnsByFile.values()
+                .stream()
+                .mapToDouble(this::calculatePawnScoreByCount)
                 .sum();
     }
 
     private Map<File, List<Piece>> findPawnsByFile(final PieceColor pawnColor) {
-        return pieces.entrySet().stream()
-                .filter(piece -> piece.getValue().isSameType(PieceType.PAWN))
-                .filter(piece -> piece.getValue().isSameColor(pawnColor))
-                .collect(Collectors.groupingBy(piece -> piece.getKey().file(),
+        return pieces.entrySet()
+                .stream()
+                .filter(entry -> entry.getValue().isSameType(PieceType.PAWN))
+                .filter(entry -> entry.getValue().isSameColor(pawnColor))
+                .collect(Collectors.groupingBy(entry -> entry.getKey().file(),
                         Collectors.mapping(Map.Entry::getValue, Collectors.toList())));
     }
 
-    private double calculatePawnScoreByCount(final long count, final Piece pawn) {
-        final double pawnBasicScore = pawn.getScore();
-        if (count > 1) {
-            return (pawnBasicScore * count) * PENALTY_RATE;
+    private double calculatePawnScoreByCount(final List<Piece> pawns) {
+        if (pawns.size() > 1) {
+            return calculatePawnScore(pawns) * PAWN_PENALTY_RATE;
         }
-        return pawnBasicScore * count;
+        return calculatePawnScore(pawns);
     }
 
-    private Piece getPawn(List<Piece> pawns) {
-        return pawns.get(0);
+    private double calculatePawnScore(final List<Piece> pawns) {
+        return pawns.stream()
+                .mapToDouble(Piece::getScore)
+                .sum();
     }
 
     public PieceColor findWinnerTeam() {
@@ -74,13 +78,15 @@ public class GameStatus {
     }
 
     private long countKingOnBoard() {
-        return pieces.values().stream()
+        return pieces.values().
+                stream()
                 .filter(piece -> piece.isSameType(PieceType.KING))
                 .count();
     }
 
     private PieceColor findFinalWinnerTeam() {
-        return pieces.values().stream()
+        return pieces.values()
+                .stream()
                 .filter(piece -> piece.isSameType(PieceType.KING))
                 .findAny()
                 .orElseThrow(() -> new IllegalStateException(ERROR_NOT_EXIST_KING))
