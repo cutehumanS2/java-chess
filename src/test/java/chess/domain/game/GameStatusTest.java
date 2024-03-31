@@ -1,6 +1,6 @@
 package chess.domain.game;
 
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.assertj.core.api.Assertions.assertThat;
 
 import chess.domain.piece.PieceColor;
 import chess.domain.square.File;
@@ -15,9 +15,9 @@ class GameStatusTest {
     @Test
     void changeTurnWhenMovePiece() {
         final GameStatus gameStatus = new GameStatus(PieceColor.WHITE);
+
         gameStatus.move(new Square(File.e, Rank.TWO), new Square(File.e, Rank.FOUR));
 
-        assertThatThrownBy(() -> gameStatus.move(new Square(File.e, Rank.FOUR), new Square(File.e, Rank.FIVE)))
-                .isInstanceOf(IllegalArgumentException.class);
+        assertThat(gameStatus.getTurn()).isEqualTo(PieceColor.BLACK);
     }
 }

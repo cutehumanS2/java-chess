@@ -27,7 +27,6 @@ public class GameStatus {
         return board.getPieces();
     }
 
-    // TODO 턴 변경 테스트
     public PieceColor getTurn() {
         return turn;
     }
