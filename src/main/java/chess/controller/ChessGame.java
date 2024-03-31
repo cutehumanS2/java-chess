@@ -79,7 +79,6 @@ public class ChessGame {
         }
         if (command == Command.MOVE) {
             command = move(gameStatus, gameResult, commandInput);
-            gameService.saveCurrentTurn(gameStatus);
         }
         return command;
     }
@@ -96,11 +95,14 @@ public class ChessGame {
         }
     }
 
-    private Command move(final GameStatus game, final GameResult gameResult, final String commandInput) {
+    private Command move(final GameStatus gameStatus, final GameResult gameResult, final String commandInput) {
         final List<String> splitCommand = List.of(commandInput.split(MOVE_COMMAND_DELIMITER));
         final Square source = createSquare(splitCommand.get(SOURCE_SQUARE_INDEX));
         final Square target = createSquare(splitCommand.get(TARGET_SQUARE_INDEX));
-        game.move(source, target);
+        gameStatus.move(source, target);
+
+        final Long gameId = gameService.saveCurrentTurn(gameStatus);
+        gameService.saveMovement(gameId, source, target);
 
         if (gameResult.isGameOver()) {
             return Command.END;

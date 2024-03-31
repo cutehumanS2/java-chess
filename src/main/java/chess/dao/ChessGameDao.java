@@ -57,6 +57,7 @@ public class ChessGameDao implements ChessGameRepository {
              final PreparedStatement preparedStatement = connection.prepareStatement(query)) {
             preparedStatement.setString(1, ColorMapper.findNameByColor(gameStatus.getTurn()));
             preparedStatement.setLong(2, gameId);
+            preparedStatement.executeUpdate();
         } catch (final SQLException e) {
             throw new RuntimeException(e);
         }

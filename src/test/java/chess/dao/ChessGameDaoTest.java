@@ -18,7 +18,7 @@ class ChessGameDaoTest {
     void saveGameStatus() {
         final GameStatus gameStatus = new GameStatus(PieceColor.WHITE);
 
-        Long actual = repository.save(gameStatus);
+        final Long actual = repository.save(gameStatus);
 
         assertThat(actual).isEqualTo(1L);
     }
@@ -29,7 +29,7 @@ class ChessGameDaoTest {
         final GameStatus gameStatus = new GameStatus(PieceColor.WHITE);
         final Long gameId = repository.save(gameStatus);
 
-        Optional<GameStatus> actual = repository.findGameStatusById(gameId);
+        final Optional<GameStatus> actual = repository.findGameStatusById(gameId);
 
         assertThat(actual.get().getTurn()).isEqualTo(PieceColor.WHITE);
     }
@@ -39,7 +39,7 @@ class ChessGameDaoTest {
     void returnEmptyIfGameStatusByGameIdIsNotExist() {
         final Long gameId = 1L;
 
-        Optional<GameStatus> actual = repository.findGameStatusById(gameId);
+        final Optional<GameStatus> actual = repository.findGameStatusById(gameId);
 
         assertThat(actual).isEmpty();
     }

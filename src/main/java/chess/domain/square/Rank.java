@@ -68,4 +68,9 @@ public enum Rank {
 
         return rankPath;
     }
+
+    // TODO 지우고 컨버터 만들기
+    public int getIndex() {
+        return index;
+    }
 }
