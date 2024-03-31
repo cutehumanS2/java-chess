@@ -26,4 +26,12 @@ public enum ColorMapper {
                 .orElseThrow(() -> new IllegalArgumentException("매칭되는 이름이 없습니다."))
                 .name;
     }
+
+    public static PieceColor findColorByName(final String name) {
+        return Arrays.stream(values())
+                .filter(colorMapper -> colorMapper.name.equals(name))
+                .findAny()
+                .orElseThrow(() -> new IllegalArgumentException("매칭되는 색상이 없습니다."))
+                .color;
+    }
 }

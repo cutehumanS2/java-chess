@@ -8,12 +8,12 @@ import chess.domain.square.Square;
 
 import java.util.Map;
 
-public class ChessStatus {
+public class GameStatus {
 
     private final Board board;
     private PieceColor turn;
 
-    public ChessStatus(final PieceColor turn) {
+    public GameStatus(final PieceColor turn) {
         this.board = BoardFactory.createBoard();
         this.turn = turn;
     }
@@ -25,5 +25,10 @@ public class ChessStatus {
 
     public Map<Square, Piece> getPieces() {
         return board.getPieces();
+    }
+
+    // TODO 턴 변경 테스트
+    public PieceColor getTurn() {
+        return turn;
     }
 }

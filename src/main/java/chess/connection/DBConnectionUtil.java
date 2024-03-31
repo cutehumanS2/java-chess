@@ -4,10 +4,6 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
-import static chess.ConnectionConst.PASSWORD;
-import static chess.ConnectionConst.URL;
-import static chess.ConnectionConst.USERNAME;
-
 public class DBConnectionUtil {
 
     public static Connection getConnection() {

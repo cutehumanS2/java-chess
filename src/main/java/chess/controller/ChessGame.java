@@ -1,11 +1,12 @@
 package chess.controller;
 
-import chess.domain.game.ChessStatus;
+import chess.domain.game.GameStatus;
 import chess.domain.game.GameResult;
 import chess.domain.piece.PieceColor;
 import chess.domain.square.File;
 import chess.domain.square.Rank;
 import chess.domain.square.Square;
+import chess.service.ChessGameService;
 import chess.view.Command;
 import chess.view.InputView;
 import chess.view.OutputView;
@@ -22,6 +23,12 @@ public class ChessGame {
     private static final int TARGET_SQUARE_INDEX = 2;
     private static final int FILE_INDEX = 0;
     private static final int RANK_INDEX = 1;
+
+    private final ChessGameService gameService;
+
+    public ChessGame(ChessGameService gameService) {
+        this.gameService = gameService;
+    }
 
     public void run() {
         OutputView.printStartMessage();
@@ -47,13 +54,13 @@ public class ChessGame {
     }
 
     private void startGame() {
-        final ChessStatus game = new ChessStatus(PieceColor.WHITE);
+        final GameStatus game = new GameStatus(PieceColor.WHITE);
         final GameResult gameResult = new GameResult(game.getPieces());
         OutputView.printBoard(game.getPieces());
         playGameUntilEnd(game, gameResult);
     }
 
-    private void playGameUntilEnd(final ChessStatus game, final GameResult gameResult) {
+    private void playGameUntilEnd(final GameStatus game, final GameResult gameResult) {
         while (requestUntilValid(() -> playGame(game, gameResult) != Command.END)) {
             OutputView.printBoard(game.getPieces());
         }
@@ -62,7 +69,7 @@ public class ChessGame {
                 gameResult.calculateTotalScore(PieceColor.BLACK));
     }
 
-    private Command playGame(final ChessStatus game, final GameResult gameResult) {
+    private Command playGame(final GameStatus gameStatus, final GameResult gameResult) {
         String commandInput = requestUntilValid(InputView::readCommand);
         Command command = requestCommand(commandInput);
 
@@ -71,7 +78,8 @@ public class ChessGame {
                     gameResult.calculateTotalScore(PieceColor.BLACK));
         }
         if (command == Command.MOVE) {
-            command = move(game, gameResult, commandInput);
+            command = move(gameStatus, gameResult, commandInput);
+            gameService.saveCurrentTurn(gameStatus);
         }
         return command;
     }
@@ -88,7 +96,7 @@ public class ChessGame {
         }
     }
 
-    private Command move(final ChessStatus game, final GameResult gameResult, final String commandInput) {
+    private Command move(final GameStatus game, final GameResult gameResult, final String commandInput) {
         final List<String> splitCommand = List.of(commandInput.split(MOVE_COMMAND_DELIMITER));
         final Square source = createSquare(splitCommand.get(SOURCE_SQUARE_INDEX));
         final Square target = createSquare(splitCommand.get(TARGET_SQUARE_INDEX));

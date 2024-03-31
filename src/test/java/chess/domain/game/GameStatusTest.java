@@ -9,15 +9,15 @@ import chess.domain.square.Square;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-class ChessStatusTest {
+class GameStatusTest {
 
     @DisplayName("기물을 이동하면 턴이 바뀐다.")
     @Test
     void changeTurnWhenMovePiece() {
-        final ChessStatus chessStatus = new ChessStatus(PieceColor.WHITE);
-        chessStatus.move(new Square(File.e, Rank.TWO), new Square(File.e, Rank.FOUR));
+        final GameStatus gameStatus = new GameStatus(PieceColor.WHITE);
+        gameStatus.move(new Square(File.e, Rank.TWO), new Square(File.e, Rank.FOUR));
 
-        assertThatThrownBy(() -> chessStatus.move(new Square(File.e, Rank.FOUR), new Square(File.e, Rank.FIVE)))
+        assertThatThrownBy(() -> gameStatus.move(new Square(File.e, Rank.FOUR), new Square(File.e, Rank.FIVE)))
                 .isInstanceOf(IllegalArgumentException.class);
     }
 }
