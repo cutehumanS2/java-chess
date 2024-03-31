@@ -1,6 +1,7 @@
 package chess.dao;
 
 import chess.domain.game.GameStatus;
+import chess.repository.ChessGameRepository;
 import chess.view.mapper.ColorMapper;
 
 import java.util.HashMap;

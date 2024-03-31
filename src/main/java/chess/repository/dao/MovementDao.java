@@ -1,9 +1,10 @@
-package chess.dao;
+package chess.repository.dao;
 
 import chess.connection.DBConnectionUtil;
 import chess.dto.Movement;
 import chess.dto.MovementRequestDto;
 import chess.dto.MovementResponseDto;
+import chess.repository.MovementRepository;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;

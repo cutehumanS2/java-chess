@@ -1,4 +1,4 @@
-package chess.dao;
+package chess.repository;
 
 import chess.domain.game.GameStatus;
 

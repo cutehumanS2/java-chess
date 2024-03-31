@@ -2,10 +2,10 @@ package chess.service;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import chess.dao.ChessGameRepository;
+import chess.repository.ChessGameRepository;
 import chess.dao.FakeChessGameDao;
 import chess.dao.FakeMovementDao;
-import chess.dao.MovementRepository;
+import chess.repository.MovementRepository;
 import chess.domain.game.GameStatus;
 import chess.domain.piece.PieceColor;
 import chess.domain.square.File;

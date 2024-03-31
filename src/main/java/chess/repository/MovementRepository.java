@@ -1,4 +1,4 @@
-package chess.dao;
+package chess.repository;
 
 import chess.dto.Movement;
 import chess.dto.MovementRequestDto;

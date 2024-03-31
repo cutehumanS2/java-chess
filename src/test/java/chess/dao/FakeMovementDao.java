@@ -1,9 +1,9 @@
 package chess.dao;
 
-import chess.domain.square.Square;
 import chess.dto.Movement;
 import chess.dto.MovementRequestDto;
 import chess.dto.MovementResponseDto;
+import chess.repository.MovementRepository;
 
 import java.util.ArrayList;
 import java.util.HashMap;

@@ -1,8 +1,8 @@
 import chess.controller.ChessGame;
-import chess.dao.ChessGameDao;
-import chess.dao.ChessGameRepository;
-import chess.dao.MovementDao;
-import chess.dao.MovementRepository;
+import chess.repository.dao.ChessGameDao;
+import chess.repository.ChessGameRepository;
+import chess.repository.dao.MovementDao;
+import chess.repository.MovementRepository;
 import chess.service.ChessGameService;
 
 public class Application {

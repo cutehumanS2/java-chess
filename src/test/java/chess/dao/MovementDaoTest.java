@@ -7,6 +7,7 @@ import chess.domain.square.Rank;
 import chess.domain.square.Square;
 import chess.dto.Movement;
 import chess.dto.MovementRequestDto;
+import chess.repository.MovementRepository;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
