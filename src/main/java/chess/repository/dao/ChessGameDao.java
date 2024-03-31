@@ -19,7 +19,8 @@ public class ChessGameDao implements ChessGameRepository {
         final String query = "insert into chess_game (turn) values(?)";
 
         try (final Connection connection = DBConnectionUtil.getConnection();
-             final PreparedStatement preparedStatement = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS)) {
+             final PreparedStatement preparedStatement =
+                     connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS)) {
             preparedStatement.setString(1, ColorMapper.findNameByColor(gameStatus.getTurn()));
             preparedStatement.executeUpdate();
 

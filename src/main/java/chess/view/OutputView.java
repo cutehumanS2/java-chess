@@ -39,6 +39,10 @@ public class OutputView {
                 .toList();
     }
 
+    public static void printCurrentTurn(final PieceColor turn) {
+        System.out.printf("%n> " + ColorMapper.findNameByColor(turn) + " 진영의 턴입니다.%n");
+    }
+
     public static void printGameResult(
             final PieceColor winnerTeamColor, final double whiteTeamScore, final double blackTeamScore) {
         printScoreByColor(PieceColor.WHITE, whiteTeamScore);

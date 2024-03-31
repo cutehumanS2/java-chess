@@ -82,7 +82,6 @@ public class Board {
         return pieces.getOrDefault(square, new Piece(PieceType.EMPTY, PieceColor.NONE));
     }
 
-
     public Map<Square, Piece> getPieces() {
         return Collections.unmodifiableMap(pieces);
     }

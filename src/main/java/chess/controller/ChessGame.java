@@ -58,6 +58,7 @@ public class ChessGame {
         final GameStatus gameStatus = new GameStatus(PieceColor.WHITE);
         recoveryGame(gameStatus);
         final GameResult gameResult = new GameResult(gameStatus.getPieces());
+        OutputView.printCurrentTurn(gameStatus.getTurn());
         OutputView.printBoard(gameStatus.getPieces());
         playGameUntilEnd(gameStatus, gameResult);
     }
@@ -67,9 +68,10 @@ public class ChessGame {
         movements.forEach(movement -> gameStatus.move(movement.source(), movement.target()));
     }
 
-    private void playGameUntilEnd(final GameStatus game, final GameResult gameResult) {
-        while (requestUntilValid(() -> playGame(game, gameResult) != Command.END)) {
-            OutputView.printBoard(game.getPieces());
+    private void playGameUntilEnd(final GameStatus gameStatus, final GameResult gameResult) {
+        while (requestUntilValid(() -> playGame(gameStatus, gameResult) != Command.END)) {
+            OutputView.printCurrentTurn(gameStatus.getTurn());
+            OutputView.printBoard(gameStatus.getPieces());
         }
 
         OutputView.printFinalGameResult(gameResult.findWinnerTeam(), gameResult.calculateTotalScore(PieceColor.WHITE),

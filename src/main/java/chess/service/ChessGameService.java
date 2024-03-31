@@ -25,7 +25,6 @@ public class ChessGameService {
         final Optional<GameStatus> gameStatus = gameRepository.findGameStatusById(gameId);
 
         if (gameStatus.isPresent()) {
-            System.out.println(currentStatus.getTurn());
             gameRepository.update(gameId, currentStatus);
             return gameId;
         }
