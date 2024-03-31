@@ -22,7 +22,8 @@ public class MovementDao implements MovementRepository {
                 "values(?, ?, ?, ?, ?)";
 
         try (final Connection connection = DBConnectionUtil.getConnection();
-             final PreparedStatement preparedStatement = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS)) {
+             final PreparedStatement preparedStatement =
+                     connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS)) {
             preparedStatement.setLong(1, requestDto.gameId());
             preparedStatement.setString(2, requestDto.sourceFile());
             preparedStatement.setString(3, requestDto.sourceRank());
