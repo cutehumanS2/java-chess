@@ -2,6 +2,7 @@ package chess.dao;
 
 import chess.domain.square.Square;
 import chess.dto.Movement;
+import chess.dto.MovementRequestDto;
 import chess.dto.MovementResponseDto;
 
 import java.util.ArrayList;
@@ -21,11 +22,12 @@ public class FakeMovementDao implements MovementRepository {
     }
 
     @Override
-    public Long save(final Long gameId, final Square source, final Square target) {
-        final String sourceString = source.file().name() + source.rank().getIndex();
-        final String targetString = target.file().name() + target.rank().getIndex();
+    public Long save(final MovementRequestDto requestDto) {
+        final Long gameId = requestDto.gameId();
+        final MovementResponseDto responseDto = MovementResponseDto.toDto(id, requestDto.gameId(),
+                requestDto.sourceFile(), requestDto.sourceRank(), requestDto.targetFile(), requestDto.targetRank());
         movements.putIfAbsent(gameId, new ArrayList<>());
-        movements.get(gameId).add(MovementResponseDto.toEntity(MovementResponseDto.toDto(id, gameId, sourceString, targetString)));
+        movements.get(gameId).add(MovementResponseDto.toEntity(responseDto));
         return id++;
     }
 

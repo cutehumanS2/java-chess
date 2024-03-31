@@ -12,6 +12,7 @@ import chess.domain.square.File;
 import chess.domain.square.Rank;
 import chess.domain.square.Square;
 import chess.dto.Movement;
+import chess.dto.MovementRequestDto;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -63,10 +64,10 @@ class ChessGameServiceTest {
     @Test
     void findMovementsByGameId() {
         final Long gameId = 1L;
-        movementRepository.save(gameId, new Square(File.b, Rank.TWO), new Square(File.b, Rank.THREE));
-        movementRepository.save(gameId, new Square(File.b, Rank.SEVEN), new Square(File.b, Rank.SIX));
+        movementRepository.save(MovementRequestDto.toDto(gameId, new Square(File.b, Rank.TWO), new Square(File.b, Rank.THREE)));
+        movementRepository.save(MovementRequestDto.toDto(gameId, new Square(File.b, Rank.SEVEN), new Square(File.b, Rank.SIX)));
 
-        List<Movement> actual = service.loadMovements(gameId);
+        final List<Movement> actual = service.loadMovements(gameId);
 
         assertThat(actual).hasSize(2);
     }

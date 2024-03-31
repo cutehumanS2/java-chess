@@ -1,13 +1,13 @@
 package chess.dao;
 
-import chess.domain.square.Square;
 import chess.dto.Movement;
+import chess.dto.MovementRequestDto;
 
 import java.util.List;
 
 public interface MovementRepository {
 
-    Long save(final Long gameId, final Square source, final Square target);
+    Long save(final MovementRequestDto requestDto);
 
     List<Movement> findMovementsById(final Long gameId);
 }

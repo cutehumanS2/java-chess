@@ -6,6 +6,7 @@ import chess.domain.square.File;
 import chess.domain.square.Rank;
 import chess.domain.square.Square;
 import chess.dto.Movement;
+import chess.dto.MovementRequestDto;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -21,8 +22,8 @@ class MovementDaoTest {
         final Long gameId = 1L;
         final Square source = new Square(File.b, Rank.TWO);
         final Square target = new Square(File.b, Rank.THREE);
-
-        final Long actual = repository.save(gameId, source, target);
+        final MovementRequestDto requestDto = MovementRequestDto.toDto(gameId, source, target);
+        final Long actual = repository.save(requestDto);
 
         assertThat(actual).isEqualTo(1L);
     }
@@ -31,8 +32,8 @@ class MovementDaoTest {
     @Test
     void findMovementsByGameId() {
         final Long gameId = 1L;
-        repository.save(gameId, new Square(File.b, Rank.TWO), new Square(File.b, Rank.THREE));
-        repository.save(gameId, new Square(File.b, Rank.SEVEN), new Square(File.b, Rank.SIX));
+        repository.save(MovementRequestDto.toDto(gameId, new Square(File.b, Rank.TWO), new Square(File.b, Rank.THREE)));
+        repository.save(MovementRequestDto.toDto(gameId, new Square(File.b, Rank.SEVEN), new Square(File.b, Rank.SIX)));
 
         final List<Movement> actual = repository.findMovementsById(gameId);
 

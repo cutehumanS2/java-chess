@@ -1,8 +1,8 @@
 package chess.dao;
 
 import chess.connection.DBConnectionUtil;
-import chess.domain.square.Square;
 import chess.dto.Movement;
+import chess.dto.MovementRequestDto;
 import chess.dto.MovementResponseDto;
 
 import java.sql.Connection;
@@ -16,14 +16,17 @@ import java.util.List;
 public class MovementDao implements MovementRepository {
 
     @Override
-    public Long save(final Long gameId, final Square source, final Square target) {
-        final String query = "insert into movement (chess_game_id, source, target) values(?, ?, ?)";
+    public Long save(final MovementRequestDto requestDto) {
+        final String query = "insert into movement (chess_game_id, source_file, source_rank, target_file, target_rank) " +
+                "values(?, ?, ?, ?, ?)";
 
         try (final Connection connection = DBConnectionUtil.getConnection();
              final PreparedStatement preparedStatement = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS)) {
-            preparedStatement.setLong(1, gameId);
-            preparedStatement.setString(2, source.file().name() + source.rank().getIndex());
-            preparedStatement.setString(3, target.file().name() + target.rank().getIndex());
+            preparedStatement.setLong(1, requestDto.gameId());
+            preparedStatement.setString(2, requestDto.sourceFile());
+            preparedStatement.setString(3, requestDto.sourceRank());
+            preparedStatement.setString(4, requestDto.targetFile());
+            preparedStatement.setString(5, requestDto.targetRank());
             preparedStatement.executeUpdate();
 
             ResultSet resultSet = preparedStatement.getGeneratedKeys();
@@ -49,8 +52,10 @@ public class MovementDao implements MovementRepository {
                         MovementResponseDto.toDto(
                                 resultSet.getLong("id"),
                                 resultSet.getLong("chess_game_id"),
-                                resultSet.getString("source"),
-                                resultSet.getString("target")));
+                                resultSet.getString("source_file"),
+                                resultSet.getString("source_rank"),
+                                resultSet.getString("target_file"),
+                                resultSet.getString("target_rank")));
                 movements.add(movement);
             }
             return movements;
