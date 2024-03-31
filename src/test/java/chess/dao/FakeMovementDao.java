@@ -25,7 +25,7 @@ public class FakeMovementDao implements MovementRepository {
         final String sourceString = source.file().name() + source.rank().getIndex();
         final String targetString = target.file().name() + target.rank().getIndex();
         movements.putIfAbsent(gameId, new ArrayList<>());
-        movements.get(gameId).add(MovementResponseDto.toEntity(new MovementResponseDto(id, gameId, sourceString, targetString)));
+        movements.get(gameId).add(MovementResponseDto.toEntity(MovementResponseDto.toDto(id, gameId, sourceString, targetString)));
         return id++;
     }
 

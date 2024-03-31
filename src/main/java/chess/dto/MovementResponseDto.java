@@ -8,6 +8,10 @@ import java.util.List;
 
 public record MovementResponseDto(Long id, Long gameId, String source, String target) {
 
+    public static MovementResponseDto toDto(Long id, Long gameId, String source, String target) {
+        return new MovementResponseDto(id, gameId, source, target);
+    }
+
     public static Movement toEntity(final MovementResponseDto responseDto) {
         return new Movement(createSquare(responseDto.source()), createSquare(responseDto.target()));
     }

@@ -1,11 +1,9 @@
 package chess.dao;
 
 import chess.connection.DBConnectionUtil;
-import chess.domain.game.GameStatus;
 import chess.domain.square.Square;
 import chess.dto.Movement;
 import chess.dto.MovementResponseDto;
-import chess.view.mapper.ColorMapper;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -48,7 +46,7 @@ public class MovementDao implements MovementRepository {
             List<Movement> movements = new ArrayList<>();
             while (resultSet.next()) {
                 Movement movement = MovementResponseDto.toEntity(
-                        new MovementResponseDto(
+                        MovementResponseDto.toDto(
                                 resultSet.getLong("id"),
                                 resultSet.getLong("chess_game_id"),
                                 resultSet.getString("source"),
