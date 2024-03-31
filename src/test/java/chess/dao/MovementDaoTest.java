@@ -5,8 +5,11 @@ import static org.assertj.core.api.Assertions.assertThat;
 import chess.domain.square.File;
 import chess.domain.square.Rank;
 import chess.domain.square.Square;
+import chess.dto.Movement;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+
+import java.util.List;
 
 class MovementDaoTest {
 
@@ -22,5 +25,17 @@ class MovementDaoTest {
         final Long actual = repository.save(gameId, source, target);
 
         assertThat(actual).isEqualTo(1L);
+    }
+
+    @DisplayName("게임 아이디에 해당하는 기물의 움직임들을 조회한다.")
+    @Test
+    void findMovementsByGameId() {
+        final Long gameId = 1L;
+        repository.save(gameId, new Square(File.b, Rank.TWO), new Square(File.b, Rank.THREE));
+        repository.save(gameId, new Square(File.b, Rank.SEVEN), new Square(File.b, Rank.SIX));
+
+        final List<Movement> actual = repository.findMovementsById(gameId);
+
+        assertThat(actual).hasSize(2);
     }
 }

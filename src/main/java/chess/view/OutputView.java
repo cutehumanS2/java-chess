@@ -56,13 +56,8 @@ public class OutputView {
 
     public static void printFinalGameResult(
             final PieceColor winnerTeamColor, final double whiteTeamScore, final double blackTeamScore) {
-        printGameOverMessage();
         printGameResult(winnerTeamColor, whiteTeamScore, blackTeamScore);
         printFinalWinnerTeam(winnerTeamColor);
-    }
-
-    private static void printGameOverMessage() {
-        System.out.println("> 킹이 잡혀 게임을 종료합니다.");
     }
 
     private static void printFinalWinnerTeam(final PieceColor teamColor) {

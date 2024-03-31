@@ -4,7 +4,9 @@ import chess.dao.ChessGameRepository;
 import chess.dao.MovementRepository;
 import chess.domain.game.GameStatus;
 import chess.domain.square.Square;
+import chess.dto.Movement;
 
+import java.util.List;
 import java.util.Optional;
 
 public class ChessGameService {
@@ -31,5 +33,9 @@ public class ChessGameService {
 
     public Long saveMovement(final Long gameId, final Square source, final Square target) {
         return movementRepository.save(gameId, source, target);
+    }
+
+    public List<Movement> loadMovements(final Long gameId) {
+        return movementRepository.findMovementsById(gameId);
     }
 }

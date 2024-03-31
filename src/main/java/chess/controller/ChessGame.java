@@ -6,6 +6,7 @@ import chess.domain.piece.PieceColor;
 import chess.domain.square.File;
 import chess.domain.square.Rank;
 import chess.domain.square.Square;
+import chess.dto.Movement;
 import chess.service.ChessGameService;
 import chess.view.Command;
 import chess.view.InputView;
@@ -54,10 +55,16 @@ public class ChessGame {
     }
 
     private void startGame() {
-        final GameStatus game = new GameStatus(PieceColor.WHITE);
-        final GameResult gameResult = new GameResult(game.getPieces());
-        OutputView.printBoard(game.getPieces());
-        playGameUntilEnd(game, gameResult);
+        final GameStatus gameStatus = new GameStatus(PieceColor.WHITE);
+        recoveryGame(gameStatus);
+        final GameResult gameResult = new GameResult(gameStatus.getPieces());
+        OutputView.printBoard(gameStatus.getPieces());
+        playGameUntilEnd(gameStatus, gameResult);
+    }
+
+    private void recoveryGame(final GameStatus gameStatus) {
+        List<Movement> movements = gameService.loadMovements(1L);
+        movements.forEach(movement -> gameStatus.move(movement.source(), movement.target()));
     }
 
     private void playGameUntilEnd(final GameStatus game, final GameResult gameResult) {

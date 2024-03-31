@@ -1,13 +1,19 @@
 package chess.dao;
 
 import chess.connection.DBConnectionUtil;
+import chess.domain.game.GameStatus;
 import chess.domain.square.Square;
+import chess.dto.Movement;
+import chess.dto.MovementResponseDto;
+import chess.view.mapper.ColorMapper;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.List;
 
 public class MovementDao implements MovementRepository {
 
@@ -25,6 +31,31 @@ public class MovementDao implements MovementRepository {
             ResultSet resultSet = preparedStatement.getGeneratedKeys();
             resultSet.next();
             return resultSet.getLong(1);
+        } catch (final SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Override
+    public List<Movement> findMovementsById(final Long gameId) {
+        final String query = "select * from movement where chess_game_id = ?";
+
+        try (final Connection connection = DBConnectionUtil.getConnection();
+             final PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+            preparedStatement.setLong(1, gameId);
+            ResultSet resultSet = preparedStatement.executeQuery();
+
+            List<Movement> movements = new ArrayList<>();
+            while (resultSet.next()) {
+                Movement movement = MovementResponseDto.toEntity(
+                        new MovementResponseDto(
+                                resultSet.getLong("id"),
+                                resultSet.getLong("chess_game_id"),
+                                resultSet.getString("source"),
+                                resultSet.getString("target")));
+                movements.add(movement);
+            }
+            return movements;
         } catch (final SQLException e) {
             throw new RuntimeException(e);
         }
