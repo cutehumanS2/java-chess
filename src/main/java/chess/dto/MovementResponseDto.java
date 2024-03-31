@@ -14,7 +14,7 @@ public record MovementResponseDto(
 
     public static Movement toEntity(final MovementResponseDto responseDto) {
         return new Movement(convertToSquare(responseDto.sourceFile, responseDto.sourceRank),
-                convertToSquare(responseDto.targetFile, responseDto.sourceRank));
+                convertToSquare(responseDto.targetFile, responseDto.targetRank));
     }
 
     private static Square convertToSquare(final String squareFile, final String sourceRank) {
