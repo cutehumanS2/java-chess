@@ -4,8 +4,6 @@ import chess.domain.square.File;
 import chess.domain.square.Rank;
 import chess.domain.square.Square;
 
-import java.util.List;
-
 public record MovementResponseDto(
         Long id, Long gameId, String sourceFile, String sourceRank, String targetFile, String targetRank) {
 
