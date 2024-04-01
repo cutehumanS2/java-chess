@@ -7,12 +7,7 @@ import chess.domain.square.Square;
 public record MovementResponseDto(
         Long id, Long gameId, String sourceFile, String sourceRank, String targetFile, String targetRank) {
 
-    public static MovementResponseDto toDto(
-            Long id, Long gameId, String sourceFile, String sourceRank, String targetFile, String targetRank) {
-        return new MovementResponseDto(id, gameId, sourceFile, sourceRank, targetFile, targetRank);
-    }
-
-    public static Movement toEntity(final MovementResponseDto responseDto) {
+    public static Movement toMovement(final MovementResponseDto responseDto) {
         return new Movement(convertToSquare(responseDto.sourceFile, responseDto.sourceRank),
                 convertToSquare(responseDto.targetFile, responseDto.targetRank));
     }

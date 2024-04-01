@@ -50,8 +50,8 @@ public class MovementDao implements MovementRepository {
 
             List<Movement> movements = new ArrayList<>();
             while (resultSet.next()) {
-                Movement movement = MovementResponseDto.toEntity(
-                        MovementResponseDto.toDto(
+                Movement movement = MovementResponseDto.toMovement(
+                        new MovementResponseDto(
                                 resultSet.getLong("id"),
                                 resultSet.getLong("chess_game_id"),
                                 resultSet.getString("source_file"),

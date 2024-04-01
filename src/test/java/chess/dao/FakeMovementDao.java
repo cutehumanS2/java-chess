@@ -24,10 +24,10 @@ public class FakeMovementDao implements MovementRepository {
     @Override
     public Long save(final MovementRequestDto requestDto) {
         final Long gameId = requestDto.gameId();
-        final MovementResponseDto responseDto = MovementResponseDto.toDto(id, requestDto.gameId(),
+        final MovementResponseDto responseDto = new MovementResponseDto(id, requestDto.gameId(),
                 requestDto.sourceFile(), requestDto.sourceRank(), requestDto.targetFile(), requestDto.targetRank());
         movements.putIfAbsent(gameId, new ArrayList<>());
-        movements.get(gameId).add(MovementResponseDto.toEntity(responseDto));
+        movements.get(gameId).add(MovementResponseDto.toMovement(responseDto));
         return id++;
     }
 
