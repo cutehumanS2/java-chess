@@ -20,7 +20,7 @@ public class ChessGameService {
         this.movementRepository = movementRepository;
     }
 
-    public Long saveCurrentTurn(final GameStatus currentStatus) {
+    public Long upsertCurrentTurn(final GameStatus currentStatus) {
         final Long gameId = 1L;
         final Optional<GameStatus> gameStatus = gameRepository.findGameStatusById(gameId);
 

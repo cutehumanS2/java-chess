@@ -110,7 +110,7 @@ public class ChessGame {
         final Square target = createSquare(splitCommand.get(TARGET_SQUARE_INDEX));
         gameStatus.move(source, target);
 
-        final Long gameId = gameService.saveCurrentTurn(gameStatus);
+        final Long gameId = gameService.upsertCurrentTurn(gameStatus);
         gameService.saveMovement(gameId, source, target);
 
         if (gameResult.isGameOver()) {

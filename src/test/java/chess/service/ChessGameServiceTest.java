@@ -29,7 +29,7 @@ class ChessGameServiceTest {
     void saveCurrentGameStatusIfNotPresent() {
         final GameStatus currentStatus = new GameStatus(PieceColor.WHITE);
 
-        final Long actual = service.saveCurrentTurn(currentStatus);
+        final Long actual = service.upsertCurrentTurn(currentStatus);
 
         assertThat(actual).isEqualTo(1L);
     }
@@ -41,7 +41,7 @@ class ChessGameServiceTest {
         gameRepository.save(gameStatus);
 
         final GameStatus currentStatus = new GameStatus(PieceColor.BLACK);
-        final Long actualId = service.saveCurrentTurn(currentStatus);
+        final Long actualId = service.upsertCurrentTurn(currentStatus);
         final GameStatus actualStatus = gameRepository.findGameStatusById(actualId).get();
 
         assertThat(actualStatus.getTurn()).isEqualTo(PieceColor.BLACK);
