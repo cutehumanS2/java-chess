@@ -30,9 +30,9 @@ class ChessGameDaoTest {
         final GameStatus gameStatus = new GameStatus(PieceColor.WHITE);
         final Long gameId = repository.save(gameStatus);
 
-        final Optional<GameStatus> actual = repository.findGameStatusById(gameId);
+        final GameStatus actual = repository.findGameStatusById(gameId).get();
 
-        assertThat(actual.get().getTurn()).isEqualTo(PieceColor.WHITE);
+        assertThat(actual.getTurn()).isEqualTo(PieceColor.WHITE);
     }
 
     @DisplayName("게임 아이디에 해당하는 게임 상태가 없는 경우 빈 옵셔널을 리턴한다.")
@@ -52,8 +52,8 @@ class ChessGameDaoTest {
         final Long gameId = repository.save(gameStatus);
 
         repository.update(gameId, new GameStatus(PieceColor.BLACK));
-        final Optional<GameStatus> actual = repository.findGameStatusById(gameId);
+        final GameStatus actual = repository.findGameStatusById(gameId).get();
 
-        assertThat(actual.get().getTurn()).isEqualTo(PieceColor.BLACK);
+        assertThat(actual.getTurn()).isEqualTo(PieceColor.BLACK);
     }
 }
