@@ -13,6 +13,9 @@ public class DBConnectionUtil {
     private static final String USERNAME = "root";
     private static final String PASSWORD = "110423";
 
+    private DBConnectionUtil() {
+    }
+
     public static Connection getConnection() {
         try {
             return DriverManager.getConnection(URL, USERNAME, PASSWORD);
