@@ -1,14 +1,13 @@
 package chess.dao;
 
 import chess.domain.game.GameStatus;
-import chess.repository.ChessGameRepository;
 import chess.view.mapper.ColorMapper;
 
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 
-public class FakeChessGameDao implements ChessGameRepository {
+public class FakeChessGameDao implements ChessGameDao {
 
     private final Map<Long, String> gameStatuses;
 

@@ -1,7 +1,7 @@
 package chess.service;
 
-import chess.repository.ChessGameRepository;
-import chess.repository.MovementRepository;
+import chess.dao.ChessGameDao;
+import chess.dao.MovementDao;
 import chess.domain.game.GameStatus;
 import chess.domain.square.Square;
 import chess.dto.Movement;
@@ -12,12 +12,12 @@ import java.util.Optional;
 
 public class ChessGameService {
 
-    private final ChessGameRepository gameRepository;
-    private final MovementRepository movementRepository;
+    private final ChessGameDao gameRepository;
+    private final MovementDao movementDao;
 
-    public ChessGameService(final ChessGameRepository gameRepository, final MovementRepository movementRepository) {
+    public ChessGameService(final ChessGameDao gameRepository, final MovementDao movementDao) {
         this.gameRepository = gameRepository;
-        this.movementRepository = movementRepository;
+        this.movementDao = movementDao;
     }
 
     public Long upsertCurrentTurn(final GameStatus currentStatus) {
@@ -32,10 +32,10 @@ public class ChessGameService {
     }
 
     public Long saveMovement(final Long gameId, final Square source, final Square target) {
-        return movementRepository.save(MovementRequestDto.toDto(gameId, source, target));
+        return movementDao.save(MovementRequestDto.toDto(gameId, source, target));
     }
 
     public List<Movement> loadMovements(final Long gameId) {
-        return movementRepository.findMovementsById(gameId);
+        return movementDao.findMovementsById(gameId);
     }
 }

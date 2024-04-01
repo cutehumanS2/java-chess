@@ -1,10 +1,9 @@
-package chess.repository.dao;
+package chess.dao;
 
 import chess.connection.DBConnectionUtil;
 import chess.dto.Movement;
 import chess.dto.MovementRequestDto;
 import chess.dto.MovementResponseDto;
-import chess.repository.MovementRepository;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -14,7 +13,7 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MovementDao implements MovementRepository {
+public class MovementDaoImpl implements MovementDao {
 
     @Override
     public Long save(final MovementRequestDto requestDto) {

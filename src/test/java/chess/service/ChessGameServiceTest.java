@@ -2,10 +2,10 @@ package chess.service;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import chess.repository.ChessGameRepository;
+import chess.dao.ChessGameDao;
 import chess.dao.FakeChessGameDao;
 import chess.dao.FakeMovementDao;
-import chess.repository.MovementRepository;
+import chess.dao.MovementDao;
 import chess.domain.game.GameStatus;
 import chess.domain.piece.PieceColor;
 import chess.domain.square.File;
@@ -20,9 +20,9 @@ import java.util.List;
 
 class ChessGameServiceTest {
 
-    private final ChessGameRepository gameRepository = new FakeChessGameDao();
-    private final MovementRepository movementRepository = new FakeMovementDao();
-    private final ChessGameService service = new ChessGameService(gameRepository, movementRepository);
+    private final ChessGameDao gameRepository = new FakeChessGameDao();
+    private final MovementDao movementDao = new FakeMovementDao();
+    private final ChessGameService service = new ChessGameService(gameRepository, movementDao);
 
     @DisplayName("현재 게임에 대한 정보가 없으면, 현재 게임 정보를 저장한다.")
     @Test
@@ -64,8 +64,8 @@ class ChessGameServiceTest {
     @Test
     void findMovementsByGameId() {
         final Long gameId = 1L;
-        movementRepository.save(MovementRequestDto.toDto(gameId, new Square(File.b, Rank.TWO), new Square(File.b, Rank.THREE)));
-        movementRepository.save(MovementRequestDto.toDto(gameId, new Square(File.b, Rank.SEVEN), new Square(File.b, Rank.SIX)));
+        movementDao.save(MovementRequestDto.toDto(gameId, new Square(File.b, Rank.TWO), new Square(File.b, Rank.THREE)));
+        movementDao.save(MovementRequestDto.toDto(gameId, new Square(File.b, Rank.SEVEN), new Square(File.b, Rank.SIX)));
 
         final List<Movement> actual = service.loadMovements(gameId);
 

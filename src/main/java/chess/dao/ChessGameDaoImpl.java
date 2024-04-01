@@ -1,8 +1,7 @@
-package chess.repository.dao;
+package chess.dao;
 
 import chess.connection.DBConnectionUtil;
 import chess.domain.game.GameStatus;
-import chess.repository.ChessGameRepository;
 import chess.view.mapper.ColorMapper;
 
 import java.sql.Connection;
@@ -12,7 +11,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.Optional;
 
-public class ChessGameDao implements ChessGameRepository {
+public class ChessGameDaoImpl implements ChessGameDao {
 
     @Override
     public Long save(final GameStatus gameStatus) {

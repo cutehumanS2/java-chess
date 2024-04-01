@@ -3,7 +3,6 @@ package chess.dao;
 import chess.dto.Movement;
 import chess.dto.MovementRequestDto;
 import chess.dto.MovementResponseDto;
-import chess.repository.MovementRepository;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -12,7 +11,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
-public class FakeMovementDao implements MovementRepository {
+public class FakeMovementDao implements MovementDao {
 
     private final Map<Long, List<Movement>> movements;
     private Long id = 1L;

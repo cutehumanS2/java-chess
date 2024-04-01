@@ -7,7 +7,6 @@ import chess.domain.square.Rank;
 import chess.domain.square.Square;
 import chess.dto.Movement;
 import chess.dto.MovementRequestDto;
-import chess.repository.MovementRepository;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -15,7 +14,7 @@ import java.util.List;
 
 class MovementDaoTest {
 
-    private final MovementRepository repository = new FakeMovementDao();
+    private final MovementDao repository = new FakeMovementDao();
 
     @DisplayName("기물의 움직임을 저장한다.")
     @Test

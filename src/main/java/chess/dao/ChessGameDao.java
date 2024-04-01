@@ -1,10 +1,10 @@
-package chess.repository;
+package chess.dao;
 
 import chess.domain.game.GameStatus;
 
 import java.util.Optional;
 
-public interface ChessGameRepository {
+public interface ChessGameDao {
 
     Long save(final GameStatus gameStatus);
 

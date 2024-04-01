@@ -4,7 +4,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import chess.domain.game.GameStatus;
 import chess.domain.piece.PieceColor;
-import chess.repository.ChessGameRepository;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -12,7 +11,7 @@ import java.util.Optional;
 
 class ChessGameDaoTest {
 
-    private final ChessGameRepository repository = new FakeChessGameDao();
+    private final ChessGameDao repository = new FakeChessGameDao();
 
     @DisplayName("현재 게임 상태를 저장한다.")
     @Test
