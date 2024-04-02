@@ -14,5 +14,6 @@ CREATE TABLE IF NOT EXISTS movement (
     source_rank VARCHAR(8) NOT NULL,
     target_file VARCHAR(8) NOT NULL,
     target_rank VARCHAR(8) NOT NULL,
-    FOREIGN KEY (chess_game_id) REFERENCES chess_game (id)
+    FOREIGN KEY (chess_game_id) REFERENCES chess_game (id),
+    UNIQUE KEY unique_movement (source_file, source_rank, target_file, target_rank)
 );
