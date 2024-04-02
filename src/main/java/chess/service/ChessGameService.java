@@ -12,23 +12,23 @@ import java.util.Optional;
 
 public class ChessGameService {
 
-    private final ChessGameDao gameRepository;
+    private final ChessGameDao gameDao;
     private final MovementDao movementDao;
 
-    public ChessGameService(final ChessGameDao gameRepository, final MovementDao movementDao) {
-        this.gameRepository = gameRepository;
+    public ChessGameService(final ChessGameDao gameDao, final MovementDao movementDao) {
+        this.gameDao = gameDao;
         this.movementDao = movementDao;
     }
 
     public Long upsertCurrentTurn(final GameStatus currentStatus) {
         final Long gameId = 1L;
-        final Optional<GameStatus> gameStatus = gameRepository.findGameStatusById(gameId);
+        final Optional<GameStatus> gameStatus = gameDao.findGameStatusById(gameId);
 
         if (gameStatus.isPresent()) {
-            gameRepository.update(gameId, currentStatus);
+            gameDao.update(gameId, currentStatus);
             return gameId;
         }
-        return gameRepository.save(currentStatus);
+        return gameDao.save(currentStatus);
     }
 
     public Long saveMovement(final Long gameId, final Square source, final Square target) {

@@ -11,14 +11,14 @@ import java.util.Optional;
 
 class ChessGameDaoTest {
 
-    private final ChessGameDao repository = new FakeChessGameDao();
+    private final ChessGameDao gameDao = new FakeChessGameDao();
 
     @DisplayName("현재 게임 상태를 저장한다.")
     @Test
     void saveGameStatus() {
         final GameStatus gameStatus = new GameStatus(PieceColor.WHITE);
 
-        final Long actual = repository.save(gameStatus);
+        final Long actual = gameDao.save(gameStatus);
 
         assertThat(actual).isEqualTo(1L);
     }
@@ -27,9 +27,9 @@ class ChessGameDaoTest {
     @Test
     void findGameStatusByGameId() {
         final GameStatus gameStatus = new GameStatus(PieceColor.WHITE);
-        final Long gameId = repository.save(gameStatus);
+        final Long gameId = gameDao.save(gameStatus);
 
-        final GameStatus actual = repository.findGameStatusById(gameId).get();
+        final GameStatus actual = gameDao.findGameStatusById(gameId).get();
 
         assertThat(actual.getTurn()).isEqualTo(PieceColor.WHITE);
     }
@@ -39,7 +39,7 @@ class ChessGameDaoTest {
     void returnEmptyIfGameStatusByGameIdIsNotExist() {
         final Long gameId = 1L;
 
-        final Optional<GameStatus> actual = repository.findGameStatusById(gameId);
+        final Optional<GameStatus> actual = gameDao.findGameStatusById(gameId);
 
         assertThat(actual).isEmpty();
     }
@@ -48,10 +48,10 @@ class ChessGameDaoTest {
     @Test
     void updateGameStatusByGameId() {
         final GameStatus gameStatus = new GameStatus(PieceColor.WHITE);
-        final Long gameId = repository.save(gameStatus);
+        final Long gameId = gameDao.save(gameStatus);
 
-        repository.update(gameId, new GameStatus(PieceColor.BLACK));
-        final GameStatus actual = repository.findGameStatusById(gameId).get();
+        gameDao.update(gameId, new GameStatus(PieceColor.BLACK));
+        final GameStatus actual = gameDao.findGameStatusById(gameId).get();
 
         assertThat(actual.getTurn()).isEqualTo(PieceColor.BLACK);
     }
