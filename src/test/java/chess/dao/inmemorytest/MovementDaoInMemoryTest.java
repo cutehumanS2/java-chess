@@ -1,26 +1,21 @@
-package chess.dao;
+package chess.dao.inmemorytest;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import chess.dao.MovementDao;
 import chess.domain.square.File;
 import chess.domain.square.Rank;
 import chess.domain.square.Square;
 import chess.dto.Movement;
 import chess.dto.MovementRequestDto;
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
 
-class MovementDaoTest {
+class MovementDaoInMemoryTest {
 
-    private final MovementDaoTestImpl movementDao = new MovementDaoTestImpl();
-
-    @AfterEach
-    public void tearDown() {
-        movementDao.truncate();
-    }
+    private final MovementDao movementDao = new FakeMovementDao();
 
     @DisplayName("기물의 움직임을 저장한다.")
     @Test

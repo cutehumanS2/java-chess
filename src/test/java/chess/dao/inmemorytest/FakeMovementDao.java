@@ -1,5 +1,6 @@
-package chess.dao;
+package chess.dao.inmemorytest;
 
+import chess.dao.MovementDao;
 import chess.dto.Movement;
 import chess.dto.MovementRequestDto;
 import chess.dto.MovementResponseDto;

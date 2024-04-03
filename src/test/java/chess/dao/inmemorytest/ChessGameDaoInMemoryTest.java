@@ -1,23 +1,18 @@
-package chess.dao;
+package chess.dao.inmemorytest;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import chess.dao.ChessGameDao;
 import chess.domain.game.GameStatus;
 import chess.domain.piece.PieceColor;
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import java.util.Optional;
 
-class ChessGameDaoTest {
+class ChessGameDaoInMemoryTest {
 
-    private final ChessGameDaoTestImpl gameDao = new ChessGameDaoTestImpl();
-
-    @AfterEach
-    public void tearDown() {
-        gameDao.truncate();
-    }
+    private final ChessGameDao gameDao = new FakeChessGameDao();
 
     @DisplayName("현재 게임 상태를 저장한다.")
     @Test

@@ -1,5 +1,6 @@
-package chess.dao;
+package chess.dao.inmemorytest;
 
+import chess.dao.ChessGameDao;
 import chess.domain.game.GameStatus;
 import chess.view.mapper.ColorMapper;
 

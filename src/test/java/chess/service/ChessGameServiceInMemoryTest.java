@@ -2,8 +2,10 @@ package chess.service;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import chess.dao.ChessGameDaoTestImpl;
-import chess.dao.MovementDaoTestImpl;
+import chess.dao.ChessGameDao;
+import chess.dao.inmemorytest.FakeChessGameDao;
+import chess.dao.inmemorytest.FakeMovementDao;
+import chess.dao.MovementDao;
 import chess.domain.game.GameStatus;
 import chess.domain.piece.PieceColor;
 import chess.domain.square.File;
@@ -11,23 +13,16 @@ import chess.domain.square.Rank;
 import chess.domain.square.Square;
 import chess.dto.Movement;
 import chess.dto.MovementRequestDto;
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
 
-class ChessGameServiceTest {
+class ChessGameServiceInMemoryTest {
 
-    private final ChessGameDaoTestImpl gameDao = new ChessGameDaoTestImpl();
-    private final MovementDaoTestImpl movementDao = new MovementDaoTestImpl();
+    private final ChessGameDao gameDao = new FakeChessGameDao();
+    private final MovementDao movementDao = new FakeMovementDao();
     private final ChessGameService service = new ChessGameService(gameDao, movementDao);
-
-    @AfterEach
-    public void tearDown() {
-        gameDao.truncate();
-        movementDao.truncate();
-    }
 
     @DisplayName("현재 게임에 대한 정보가 없으면, 현재 게임 정보를 저장한다.")
     @Test
@@ -76,5 +71,4 @@ class ChessGameServiceTest {
 
         assertThat(actual).hasSize(2);
     }
-
 }
