@@ -8,7 +8,7 @@ public class InputView {
 
     public static String readCommand() {
         final String input = scanner.nextLine();
-        Command.validateFormat(input);
+        CommandType.validateFormat(input);
         return input;
     }
 }

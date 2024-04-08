@@ -3,32 +3,34 @@ package chess.view;
 import java.util.Arrays;
 import java.util.regex.Pattern;
 
-public enum Command {
+public enum CommandType {
 
     START("^start$"),
     MOVE("^move [a-h][1-8] [a-h][1-8]$"),
     END("^end$"),
     STATUS("^status$"),
+    NONE(""),
     ;
 
     private static final String ERROR_INVALID_COMMAND = " 은(는) 올바르지 않은 명령어 입니다.";
 
     private final Pattern format;
 
-    Command(final String format) {
+    CommandType(final String format) {
         this.format = Pattern.compile(format);
     }
 
-    public static Command findByValue(final String value) {
+    public static CommandType findByValue(final String value) {
         return Arrays.stream(values())
-                .filter(command -> command.isMatchedCommandFormat(command.format, value))
+                .filter(commandType -> commandType.isMatchedCommandFormat(commandType.format, value))
                 .findAny()
                 .orElseThrow(() -> new IllegalArgumentException(value + ERROR_INVALID_COMMAND));
     }
 
+    // InputView에서 이 메서드로 검증 안 하면 무한 루프 발생
     public static void validateFormat(final String value) {
         boolean isInValidFormat = Arrays.stream(values())
-                .noneMatch(command -> command.isMatchedCommandFormat(command.format, value));
+                .noneMatch(commandType -> commandType.isMatchedCommandFormat(commandType.format, value));
         if (isInValidFormat) {
             throw new IllegalArgumentException(value + ERROR_INVALID_COMMAND);
         }

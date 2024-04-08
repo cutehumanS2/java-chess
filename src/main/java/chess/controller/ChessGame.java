@@ -8,11 +8,13 @@ import chess.domain.square.Rank;
 import chess.domain.square.Square;
 import chess.dto.Movement;
 import chess.service.ChessGameService;
-import chess.view.Command;
+import chess.view.CommandType;
 import chess.view.InputView;
 import chess.view.OutputView;
 
+import java.util.EnumMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.function.Supplier;
 
@@ -26,30 +28,35 @@ public class ChessGame {
     private static final int RANK_INDEX = 1;
 
     private final ChessGameService gameService;
+    private final Map<CommandType, Command> commands;
 
-    public ChessGame(ChessGameService gameService) {
+    public ChessGame(final ChessGameService gameService) {
         this.gameService = gameService;
+        this.commands = new EnumMap<>(CommandType.class);
+        commands.put(CommandType.MOVE, (gameStatus, gameResult, commandInput) -> move(gameStatus, commandInput));
+        commands.put(CommandType.STATUS, (gameStatus, gameResult, commandInput) -> status(gameResult));
+        commands.put(CommandType.END, ((gameStatus, gameResult, commandInput) -> end(gameResult)));
     }
 
     public void run() {
         OutputView.printStartMessage();
 
-        final Command command = requestUntilValid(this::requestStartCommand);
-        if (command == Command.END) {
+        final CommandType commandType = requestUntilValid(this::requestStartCommand);
+        if (commandType == CommandType.END) {
             return;
         }
         startGame();
     }
 
-    private Command requestStartCommand() {
+    private CommandType requestStartCommand() {
         final String commandInput = requestUntilValid(InputView::readCommand);
-        final Command command = requestUntilValid(() -> Command.findByValue(commandInput));
-        validateIsNotStartAndEnd(command);
-        return command;
+        final CommandType commandType = requestUntilValid(() -> CommandType.findByValue(commandInput));
+        validateIsNotStartAndEnd(commandType);
+        return commandType;
     }
 
-    private void validateIsNotStartAndEnd(final Command command) {
-        if (command == Command.MOVE || command == Command.STATUS) {
+    private void validateIsNotStartAndEnd(final CommandType commandType) {
+        if (commandType == CommandType.MOVE || commandType == CommandType.STATUS) {
             throw new IllegalArgumentException("게임을 먼저 시작해 주세요.");
         }
     }
@@ -69,42 +76,35 @@ public class ChessGame {
     }
 
     private void playGameUntilEnd(final GameStatus gameStatus, final GameResult gameResult) {
-        while (requestUntilValid(() -> playGame(gameStatus, gameResult) != Command.END)) {
+        CommandType command = CommandType.NONE;
+        while (command != CommandType.END) {
+            command = requestUntilValid(() -> playGame(gameStatus, gameResult));
+            command = isGameOver(gameResult, command);
             OutputView.printCurrentTurn(gameStatus.getTurn());
             OutputView.printBoard(gameStatus.getPieces());
         }
-
-        OutputView.printFinalGameResult(gameResult.findWinnerTeam(), gameResult.calculateTotalScore(PieceColor.WHITE),
-                gameResult.calculateTotalScore(PieceColor.BLACK));
     }
 
-    private Command playGame(final GameStatus gameStatus, final GameResult gameResult) {
+    private CommandType playGame(final GameStatus gameStatus, final GameResult gameResult) {
         String commandInput = requestUntilValid(InputView::readCommand);
-        Command command = requestCommand(commandInput);
-
-        if (command == Command.STATUS) {
-            OutputView.printGameResult(gameResult.findWinnerTeam(), gameResult.calculateTotalScore(PieceColor.WHITE),
-                    gameResult.calculateTotalScore(PieceColor.BLACK));
-        }
-        if (command == Command.MOVE) {
-            command = move(gameStatus, gameResult, commandInput);
-        }
-        return command;
+        CommandType commandType = requestCommand(commandInput);
+        commands.get(commandType).execute(gameStatus, gameResult, commandInput);
+        return commandType;
     }
 
-    private Command requestCommand(final String input) {
-        final Command command = Command.findByValue(input);
-        validateIsNotStart(command);
-        return command;
+    private CommandType requestCommand(final String input) {
+        final CommandType commandType = CommandType.findByValue(input);
+        validateIsNotStart(commandType);
+        return commandType;
     }
 
-    private void validateIsNotStart(final Command command) {
-        if (command == Command.START) {
+    private void validateIsNotStart(final CommandType commandType) {
+        if (commandType == CommandType.START) {
             throw new IllegalArgumentException("이미 게임이 시작되었습니다.");
         }
     }
 
-    private Command move(final GameStatus gameStatus, final GameResult gameResult, final String commandInput) {
+    private void move(final GameStatus gameStatus, final String commandInput) {
         final List<String> splitCommand = List.of(commandInput.split(MOVE_COMMAND_DELIMITER));
         final Square source = createSquare(splitCommand.get(SOURCE_SQUARE_INDEX));
         final Square target = createSquare(splitCommand.get(TARGET_SQUARE_INDEX));
@@ -112,11 +112,6 @@ public class ChessGame {
 
         final Long gameId = gameService.upsertCurrentTurn(gameStatus);
         gameService.saveMovement(gameId, source, target);
-
-        if (gameResult.isGameOver()) {
-            return Command.END;
-        }
-        return Command.MOVE;
     }
 
     private Square createSquare(final String commandInput) {
@@ -124,6 +119,24 @@ public class ChessGame {
         final File file = File.findByValue(commandToken.get(FILE_INDEX));
         final Rank rank = Rank.findByValue(commandToken.get(RANK_INDEX));
         return new Square(file, rank);
+    }
+
+    private void end(final GameResult gameResult) {
+        OutputView.printFinalGameResult(gameResult.findWinnerTeam(), gameResult.calculateTotalScore(PieceColor.WHITE),
+                gameResult.calculateTotalScore(PieceColor.BLACK));
+    }
+
+    private CommandType isGameOver(final GameResult gameResult, final CommandType command) {
+        if (gameResult.isGameOver()) {
+            // TODO: 킹 잡혔음 출력
+            return CommandType.END;
+        }
+        return command;
+    }
+
+    private void status(final GameResult gameResult) {
+        OutputView.printGameResult(gameResult.findWinnerTeam(), gameResult.calculateTotalScore(PieceColor.WHITE),
+                gameResult.calculateTotalScore(PieceColor.BLACK));
     }
 
     private <T> T requestUntilValid(Supplier<T> supplier) {

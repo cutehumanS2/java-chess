@@ -40,6 +40,7 @@ public class Board {
     }
 
     private void validateIsNonExistentPiece(final Square square) {
+        // TODO: EMPTY 상태 조건 추가
         if (!pieces.containsKey(square)) {
             throw new IllegalArgumentException(ERROR_NOT_EXIST_PIECE);
         }
