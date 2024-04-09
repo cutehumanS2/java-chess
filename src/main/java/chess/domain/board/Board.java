@@ -75,12 +75,12 @@ public class Board {
 
     private void replacePieceSquare(final Square source, final Square target) {
         final Piece sourcePiece = findPieceBySquare(source);
-        pieces.replace(source, new Piece(PieceType.EMPTY, PieceColor.NONE));
+        pieces.replace(source, Piece.of(PieceType.EMPTY, PieceColor.NONE));
         pieces.replace(target, sourcePiece);
     }
 
     public Piece findPieceBySquare(final Square square) {
-        return pieces.getOrDefault(square, new Piece(PieceType.EMPTY, PieceColor.NONE));
+        return pieces.getOrDefault(square, Piece.of(PieceType.EMPTY, PieceColor.NONE));
     }
 
     public Map<Square, Piece> getPieces() {

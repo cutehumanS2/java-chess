@@ -24,7 +24,7 @@ class BoardTest {
         @Test
         void occurExceptionWhenSourceAndTargetAreSameSquare() {
             final Board board = new Board(Map.of(
-                    new Square(File.b, Rank.THREE), new Piece(PieceType.ROOK, PieceColor.BLACK)));
+                    new Square(File.b, Rank.THREE), Piece.of(PieceType.ROOK, PieceColor.BLACK)));
             final Square source = new Square(File.b, Rank.THREE);
             final Square target = new Square(File.b, Rank.THREE);
             final PieceColor turn = PieceColor.WHITE;
@@ -61,7 +61,7 @@ class BoardTest {
         @Test
         void occurExceptionWhenCannotMove() {
             final Board board = new Board(Map.of(
-                    new Square(File.b, Rank.THREE), new Piece(PieceType.ROOK, PieceColor.BLACK)));
+                    new Square(File.b, Rank.THREE), Piece.of(PieceType.ROOK, PieceColor.BLACK)));
             final Square source = new Square(File.b, Rank.THREE);
             final Square target = new Square(File.b, Rank.FOUR);
             final PieceColor turn = PieceColor.WHITE;
@@ -74,9 +74,9 @@ class BoardTest {
         @Test
         void occurExceptionWhenExistObstacleOnPath() {
             final Board board = new Board(Map.of(
-                    new Square(File.b, Rank.THREE), new Piece(PieceType.ROOK, PieceColor.WHITE),
-                    new Square(File.b, Rank.FOUR), new Piece(PieceType.ROOK, PieceColor.WHITE),
-                    new Square(File.b, Rank.FIVE), new Piece(PieceType.ROOK, PieceColor.WHITE)
+                    new Square(File.b, Rank.THREE), Piece.of(PieceType.ROOK, PieceColor.WHITE),
+                    new Square(File.b, Rank.FOUR), Piece.of(PieceType.ROOK, PieceColor.WHITE),
+                    new Square(File.b, Rank.FIVE), Piece.of(PieceType.ROOK, PieceColor.WHITE)
             ));
             final Square source = new Square(File.b, Rank.THREE);
             final Square target = new Square(File.b, Rank.FIVE);
@@ -91,8 +91,8 @@ class BoardTest {
     @Test
     void movePieceFromSourceToTarget() {
         final Board board = new Board(Map.of(
-                new Square(File.b, Rank.TWO), new Piece(PieceType.ROOK, PieceColor.WHITE),
-                new Square(File.b, Rank.THREE), new Piece(PieceType.ROOK, PieceColor.WHITE)
+                new Square(File.b, Rank.TWO), Piece.of(PieceType.ROOK, PieceColor.WHITE),
+                new Square(File.b, Rank.THREE), Piece.of(PieceType.ROOK, PieceColor.WHITE)
         ));
         final Square source = new Square(File.b, Rank.TWO);
         final Square target = new Square(File.b, Rank.THREE);

@@ -27,16 +27,16 @@ class GameResultTest {
         @CsvSource({"WHITE, 20.5", "BLACK, 19"})
         void calculateScore(final PieceColor color, final double expected) {
             final GameResult gameResult = new GameResult(Map.of(
-                    new Square(File.e, Rank.FOUR), new Piece(PieceType.QUEEN, PieceColor.WHITE),
-                    new Square(File.c, Rank.THREE), new Piece(PieceType.ROOK, PieceColor.WHITE),
-                    new Square(File.b, Rank.THREE), new Piece(PieceType.BISHOP, PieceColor.WHITE),
-                    new Square(File.a, Rank.THREE), new Piece(PieceType.KNIGHT, PieceColor.WHITE),
-                    new Square(File.d, Rank.THREE), new Piece(PieceType.PAWN, PieceColor.WHITE),
-                    new Square(File.e, Rank.FIVE), new Piece(PieceType.QUEEN, PieceColor.BLACK),
-                    new Square(File.c, Rank.FIVE), new Piece(PieceType.ROOK, PieceColor.BLACK),
-                    new Square(File.b, Rank.FIVE), new Piece(PieceType.BISHOP, PieceColor.BLACK),
-                    new Square(File.d, Rank.FIVE), new Piece(PieceType.PAWN, PieceColor.BLACK),
-                    new Square(File.f, Rank.FIVE), new Piece(PieceType.PAWN, PieceColor.BLACK)
+                    new Square(File.e, Rank.FOUR), Piece.of(PieceType.QUEEN, PieceColor.WHITE),
+                    new Square(File.c, Rank.THREE), Piece.of(PieceType.ROOK, PieceColor.WHITE),
+                    new Square(File.b, Rank.THREE), Piece.of(PieceType.BISHOP, PieceColor.WHITE),
+                    new Square(File.a, Rank.THREE), Piece.of(PieceType.KNIGHT, PieceColor.WHITE),
+                    new Square(File.d, Rank.THREE), Piece.of(PieceType.PAWN, PieceColor.WHITE),
+                    new Square(File.e, Rank.FIVE), Piece.of(PieceType.QUEEN, PieceColor.BLACK),
+                    new Square(File.c, Rank.FIVE), Piece.of(PieceType.ROOK, PieceColor.BLACK),
+                    new Square(File.b, Rank.FIVE), Piece.of(PieceType.BISHOP, PieceColor.BLACK),
+                    new Square(File.d, Rank.FIVE), Piece.of(PieceType.PAWN, PieceColor.BLACK),
+                    new Square(File.f, Rank.FIVE), Piece.of(PieceType.PAWN, PieceColor.BLACK)
             ));
 
             final double actual = gameResult.calculateTotalScore(color);
@@ -48,8 +48,8 @@ class GameResultTest {
         @Test
         void calculateScoreWhenPawnCountIsMoreThanOneOnSameFile() {
             final GameResult gameResult = new GameResult(Map.of(
-                    new Square(File.e, Rank.FOUR), new Piece(PieceType.PAWN, PieceColor.WHITE),
-                    new Square(File.e, Rank.FIVE), new Piece(PieceType.PAWN, PieceColor.WHITE)
+                    new Square(File.e, Rank.FOUR), Piece.of(PieceType.PAWN, PieceColor.WHITE),
+                    new Square(File.e, Rank.FIVE), Piece.of(PieceType.PAWN, PieceColor.WHITE)
             ));
 
             final double actual = gameResult.calculateTotalScore(PieceColor.WHITE);
@@ -61,8 +61,8 @@ class GameResultTest {
         @Test
         void calculateScoreWhenPawnCountIsOneOnSameFile() {
             final GameResult gameResult = new GameResult(Map.of(
-                    new Square(File.d, Rank.FOUR), new Piece(PieceType.PAWN, PieceColor.WHITE),
-                    new Square(File.e, Rank.FIVE), new Piece(PieceType.PAWN, PieceColor.WHITE)
+                    new Square(File.d, Rank.FOUR), Piece.of(PieceType.PAWN, PieceColor.WHITE),
+                    new Square(File.e, Rank.FIVE), Piece.of(PieceType.PAWN, PieceColor.WHITE)
             ));
 
             final double actual = gameResult.calculateTotalScore(PieceColor.WHITE);
@@ -79,8 +79,8 @@ class GameResultTest {
         @CsvSource({"WHITE", "BLACK"})
         void findFinalWinnerTeam(final PieceColor kingColor) {
             final GameResult gameResult = new GameResult(Map.of(
-                    new Square(File.d, Rank.FOUR), new Piece(PieceType.KING, kingColor),
-                    new Square(File.e, Rank.FIVE), new Piece(PieceType.PAWN, PieceColor.BLACK)
+                    new Square(File.d, Rank.FOUR), Piece.of(PieceType.KING, kingColor),
+                    new Square(File.e, Rank.FIVE), Piece.of(PieceType.PAWN, PieceColor.BLACK)
             ));
 
             final PieceColor actual = gameResult.findWinnerTeam();
@@ -93,11 +93,11 @@ class GameResultTest {
         @CsvSource({"QUEEN, WHITE, WHITE", "QUEEN, BLACK, BLACK", "EMPTY, NONE, NONE"})
         void findCurrentWinnerTeam(final PieceType type, final PieceColor color, final PieceColor expected) {
             final GameResult gameResult = new GameResult(Map.of(
-                    new Square(File.d, Rank.FOUR), new Piece(type, color),
-                    new Square(File.e, Rank.FIVE), new Piece(PieceType.PAWN, PieceColor.BLACK),
-                    new Square(File.e, Rank.SIX), new Piece(PieceType.KING, PieceColor.BLACK),
-                    new Square(File.f, Rank.FIVE), new Piece(PieceType.PAWN, PieceColor.WHITE),
-                    new Square(File.f, Rank.SIX), new Piece(PieceType.KING, PieceColor.WHITE)
+                    new Square(File.d, Rank.FOUR), Piece.of(type, color),
+                    new Square(File.e, Rank.FIVE), Piece.of(PieceType.PAWN, PieceColor.BLACK),
+                    new Square(File.e, Rank.SIX), Piece.of(PieceType.KING, PieceColor.BLACK),
+                    new Square(File.f, Rank.FIVE), Piece.of(PieceType.PAWN, PieceColor.WHITE),
+                    new Square(File.f, Rank.SIX), Piece.of(PieceType.KING, PieceColor.WHITE)
             ));
 
             final PieceColor actual = gameResult.findWinnerTeam();
@@ -109,7 +109,7 @@ class GameResultTest {
         @Test
         void occurExceptionWhenNoKingOnGameStatus() {
             final GameResult gameResult = new GameResult(Map.of(
-                    new Square(File.e, Rank.FIVE), new Piece(PieceType.PAWN, PieceColor.BLACK)
+                    new Square(File.e, Rank.FIVE), Piece.of(PieceType.PAWN, PieceColor.BLACK)
             ));
 
             assertThatThrownBy(gameResult::findWinnerTeam)
@@ -124,9 +124,9 @@ class GameResultTest {
         @Test
         void gameOverWhenCurrentKingCountIsNotSameInitialKingCount() {
             final GameResult gameResult = new GameResult(Map.of(
-                    new Square(File.e, Rank.FIVE), new Piece(PieceType.PAWN, PieceColor.BLACK),
-                    new Square(File.f, Rank.FIVE), new Piece(PieceType.PAWN, PieceColor.WHITE),
-                    new Square(File.f, Rank.SIX), new Piece(PieceType.KING, PieceColor.WHITE)
+                    new Square(File.e, Rank.FIVE), Piece.of(PieceType.PAWN, PieceColor.BLACK),
+                    new Square(File.f, Rank.FIVE), Piece.of(PieceType.PAWN, PieceColor.WHITE),
+                    new Square(File.f, Rank.SIX), Piece.of(PieceType.KING, PieceColor.WHITE)
             ));
 
             boolean actual = gameResult.isGameOver();
@@ -138,9 +138,9 @@ class GameResultTest {
         @Test
         void notGameOverWhenCurrentKingCountIsSameInitialKingCount() {
             final GameResult gameResult = new GameResult(Map.of(
-                    new Square(File.e, Rank.FIVE), new Piece(PieceType.KING, PieceColor.BLACK),
-                    new Square(File.f, Rank.FIVE), new Piece(PieceType.PAWN, PieceColor.WHITE),
-                    new Square(File.f, Rank.SIX), new Piece(PieceType.KING, PieceColor.WHITE)
+                    new Square(File.e, Rank.FIVE), Piece.of(PieceType.KING, PieceColor.BLACK),
+                    new Square(File.f, Rank.FIVE), Piece.of(PieceType.PAWN, PieceColor.WHITE),
+                    new Square(File.f, Rank.SIX), Piece.of(PieceType.KING, PieceColor.WHITE)
             ));
 
             boolean actual = gameResult.isGameOver();

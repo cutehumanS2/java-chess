@@ -18,14 +18,14 @@ import java.util.stream.IntStream;
 public class BoardFactory {
 
     private static final List<Function<PieceColor, Piece>> PIECES_ARRANGEMENT = List.of(
-            (pieceColor) -> new Piece(PieceType.ROOK, pieceColor),
-            (pieceColor) -> new Piece(PieceType.KNIGHT, pieceColor),
-            (pieceColor) -> new Piece(PieceType.BISHOP, pieceColor),
-            (pieceColor) -> new Piece(PieceType.QUEEN, pieceColor),
-            (pieceColor) -> new Piece(PieceType.KING, pieceColor),
-            (pieceColor) -> new Piece(PieceType.BISHOP, pieceColor),
-            (pieceColor) -> new Piece(PieceType.KNIGHT, pieceColor),
-            (pieceColor) -> new Piece(PieceType.ROOK, pieceColor)
+            (pieceColor) -> Piece.of(PieceType.ROOK, pieceColor),
+            (pieceColor) -> Piece.of(PieceType.KNIGHT, pieceColor),
+            (pieceColor) -> Piece.of(PieceType.BISHOP, pieceColor),
+            (pieceColor) -> Piece.of(PieceType.QUEEN, pieceColor),
+            (pieceColor) -> Piece.of(PieceType.KING, pieceColor),
+            (pieceColor) -> Piece.of(PieceType.BISHOP, pieceColor),
+            (pieceColor) -> Piece.of(PieceType.KNIGHT, pieceColor),
+            (pieceColor) -> Piece.of(PieceType.ROOK, pieceColor)
     );
 
     private BoardFactory() {
@@ -58,7 +58,7 @@ public class BoardFactory {
         return Arrays.stream(File.values())
                 .collect(Collectors.toMap(
                         file -> new Square(file, rank),
-                        file -> new Piece(pieceType, pieceColor)
+                        file -> Piece.of(pieceType, pieceColor)
                 ));
     }
 }

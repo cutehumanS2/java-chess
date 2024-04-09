@@ -27,8 +27,8 @@ class PawnMoveStrategyTest {
         void returnTrueWhenBlackPawnMoveDown() {
             final MoveStrategy moveStrategy = new PawnMoveStrategy();
             final Board board = new Board(Map.of(
-                    new Square(File.e, Rank.SEVEN), new Piece(PieceType.PAWN, PieceColor.BLACK),
-                    new Square(File.e, Rank.FIVE), new Piece(PieceType.EMPTY, PieceColor.NONE)
+                    new Square(File.e, Rank.SEVEN), Piece.of(PieceType.PAWN, PieceColor.BLACK),
+                    new Square(File.e, Rank.FIVE), Piece.of(PieceType.EMPTY, PieceColor.NONE)
             ));
             final Square source = new Square(File.e, Rank.SEVEN);
             final Square target = new Square(File.e, Rank.FIVE);
@@ -43,8 +43,8 @@ class PawnMoveStrategyTest {
         void returnFalseWhenBlackPawnMoveUp() {
             final MoveStrategy moveStrategy = new PawnMoveStrategy();
             final Board board = new Board(Map.of(
-                    new Square(File.e, Rank.SEVEN), new Piece(PieceType.PAWN, PieceColor.BLACK),
-                    new Square(File.e, Rank.EIGHT), new Piece(PieceType.EMPTY, PieceColor.NONE)
+                    new Square(File.e, Rank.SEVEN), Piece.of(PieceType.PAWN, PieceColor.BLACK),
+                    new Square(File.e, Rank.EIGHT), Piece.of(PieceType.EMPTY, PieceColor.NONE)
             ));
             final Square source = new Square(File.e, Rank.SEVEN);
             final Square target = new Square(File.e, Rank.EIGHT);
@@ -59,8 +59,8 @@ class PawnMoveStrategyTest {
         void returnTrueWhenWhitePawnMoveUp() {
             final MoveStrategy moveStrategy = new PawnMoveStrategy();
             final Board board = new Board(Map.of(
-                    new Square(File.e, Rank.TWO), new Piece(PieceType.PAWN, PieceColor.WHITE),
-                    new Square(File.e, Rank.FOUR), new Piece(PieceType.EMPTY, PieceColor.NONE)
+                    new Square(File.e, Rank.TWO), Piece.of(PieceType.PAWN, PieceColor.WHITE),
+                    new Square(File.e, Rank.FOUR), Piece.of(PieceType.EMPTY, PieceColor.NONE)
             ));
             final Square source = new Square(File.e, Rank.TWO);
             final Square target = new Square(File.e, Rank.FOUR);
@@ -75,8 +75,8 @@ class PawnMoveStrategyTest {
         void returnFalseWhenWhitePawnMoveDown() {
             final MoveStrategy moveStrategy = new PawnMoveStrategy();
             final Board board = new Board(Map.of(
-                    new Square(File.e, Rank.TWO), new Piece(PieceType.PAWN, PieceColor.WHITE),
-                    new Square(File.e, Rank.ONE), new Piece(PieceType.EMPTY, PieceColor.NONE)
+                    new Square(File.e, Rank.TWO), Piece.of(PieceType.PAWN, PieceColor.WHITE),
+                    new Square(File.e, Rank.ONE), Piece.of(PieceType.EMPTY, PieceColor.NONE)
             ));
             final Square source = new Square(File.e, Rank.TWO);
             final Square target = new Square(File.e, Rank.ONE);
@@ -97,11 +97,11 @@ class PawnMoveStrategyTest {
                 final Rank sourceRank, final File file, final Rank targetRank) {
             final MoveStrategy moveStrategy = new PawnMoveStrategy();
             final Board board = new Board(Map.of(
-                    new Square(File.e, Rank.TWO), new Piece(PieceType.PAWN, PieceColor.WHITE),
-                    new Square(File.e, Rank.THREE), new Piece(PieceType.EMPTY, PieceColor.NONE),
-                    new Square(File.e, Rank.FOUR), new Piece(PieceType.EMPTY, PieceColor.NONE),
-                    new Square(File.e, Rank.SEVEN), new Piece(PieceType.PAWN, PieceColor.BLACK),
-                    new Square(File.e, Rank.FIVE), new Piece(PieceType.EMPTY, PieceColor.NONE)
+                    new Square(File.e, Rank.TWO), Piece.of(PieceType.PAWN, PieceColor.WHITE),
+                    new Square(File.e, Rank.THREE), Piece.of(PieceType.EMPTY, PieceColor.NONE),
+                    new Square(File.e, Rank.FOUR), Piece.of(PieceType.EMPTY, PieceColor.NONE),
+                    new Square(File.e, Rank.SEVEN), Piece.of(PieceType.PAWN, PieceColor.BLACK),
+                    new Square(File.e, Rank.FIVE), Piece.of(PieceType.EMPTY, PieceColor.NONE)
             ));
             final Square source = new Square(File.e, sourceRank);
             final Square target = new Square(file, targetRank);
@@ -122,10 +122,10 @@ class PawnMoveStrategyTest {
                 final Rank sourceRank, final File file, final Rank targetRank) {
             final MoveStrategy moveStrategy = new PawnMoveStrategy();
             final Board board = new Board(Map.of(
-                    new Square(File.e, Rank.THREE), new Piece(PieceType.PAWN, PieceColor.WHITE),
-                    new Square(File.e, Rank.FOUR), new Piece(PieceType.EMPTY, PieceColor.NONE),
-                    new Square(File.e, Rank.SIX), new Piece(PieceType.PAWN, PieceColor.BLACK),
-                    new Square(File.e, Rank.FIVE), new Piece(PieceType.EMPTY, PieceColor.NONE)
+                    new Square(File.e, Rank.THREE), Piece.of(PieceType.PAWN, PieceColor.WHITE),
+                    new Square(File.e, Rank.FOUR), Piece.of(PieceType.EMPTY, PieceColor.NONE),
+                    new Square(File.e, Rank.SIX), Piece.of(PieceType.PAWN, PieceColor.BLACK),
+                    new Square(File.e, Rank.FIVE), Piece.of(PieceType.EMPTY, PieceColor.NONE)
             ));
             final Square source = new Square(File.e, sourceRank);
             final Square target = new Square(file, targetRank);
@@ -140,8 +140,8 @@ class PawnMoveStrategyTest {
         void returnFalseIfExceedStepLimitAfterFirstMove() {
             final MoveStrategy moveStrategy = new PawnMoveStrategy();
             final Board board = new Board(Map.of(
-                    new Square(File.e, Rank.FOUR), new Piece(PieceType.PAWN, PieceColor.WHITE),
-                    new Square(File.e, Rank.SIX), new Piece(PieceType.EMPTY, PieceColor.NONE)
+                    new Square(File.e, Rank.FOUR), Piece.of(PieceType.PAWN, PieceColor.WHITE),
+                    new Square(File.e, Rank.SIX), Piece.of(PieceType.EMPTY, PieceColor.NONE)
             ));
             final Square source = new Square(File.e, Rank.FOUR);
             final Square target = new Square(File.e, Rank.SIX);
@@ -156,8 +156,8 @@ class PawnMoveStrategyTest {
         void returnFalseWhenNotVertical() {
             final MoveStrategy moveStrategy = new PawnMoveStrategy();
             final Board board = new Board(Map.of(
-                    new Square(File.e, Rank.FOUR), new Piece(PieceType.PAWN, PieceColor.WHITE),
-                    new Square(File.e, Rank.SIX), new Piece(PieceType.EMPTY, PieceColor.NONE)
+                    new Square(File.e, Rank.FOUR), Piece.of(PieceType.PAWN, PieceColor.WHITE),
+                    new Square(File.e, Rank.SIX), Piece.of(PieceType.EMPTY, PieceColor.NONE)
             ));
             final Square source = new Square(File.e, Rank.FOUR);
             final Square target = new Square(File.e, Rank.SIX);
@@ -176,8 +176,8 @@ class PawnMoveStrategyTest {
         void returnTrueWhenCanAttack() {
             final MoveStrategy moveStrategy = new PawnMoveStrategy();
             final Board board = new Board(Map.of(
-                    new Square(File.e, Rank.FOUR), new Piece(PieceType.PAWN, PieceColor.WHITE),
-                    new Square(File.f, Rank.FIVE), new Piece(PieceType.PAWN, PieceColor.BLACK)
+                    new Square(File.e, Rank.FOUR), Piece.of(PieceType.PAWN, PieceColor.WHITE),
+                    new Square(File.f, Rank.FIVE), Piece.of(PieceType.PAWN, PieceColor.BLACK)
             ));
             final Square source = new Square(File.e, Rank.FOUR);
             final Square target = new Square(File.f, Rank.FIVE);
@@ -193,9 +193,9 @@ class PawnMoveStrategyTest {
         void returnFalseWhenCannotAttack(final File file, final Rank rank) {
             final MoveStrategy moveStrategy = new PawnMoveStrategy();
             final Board board = new Board(Map.of(
-                    new Square(File.e, Rank.FOUR), new Piece(PieceType.PAWN, PieceColor.WHITE),
-                    new Square(File.e, Rank.FIVE), new Piece(PieceType.ROOK, PieceColor.BLACK),
-                    new Square(File.d, Rank.SIX), new Piece(PieceType.EMPTY, PieceColor.NONE)
+                    new Square(File.e, Rank.FOUR), Piece.of(PieceType.PAWN, PieceColor.WHITE),
+                    new Square(File.e, Rank.FIVE), Piece.of(PieceType.ROOK, PieceColor.BLACK),
+                    new Square(File.d, Rank.SIX), Piece.of(PieceType.EMPTY, PieceColor.NONE)
             ));
             final Square source = new Square(File.e, Rank.FOUR);
             final Square target = new Square(file, rank);

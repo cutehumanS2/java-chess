@@ -24,15 +24,15 @@ class QueenMoveStrategyTest {
     void returnTrueIfQueenCanMove(final File file, final Rank rank) {
         final MoveStrategy moveStrategy = new QueenMoveStrategy();
         final Board board = new Board(Map.of(
-                new Square(File.e, Rank.FOUR), new Piece(PieceType.BISHOP, PieceColor.WHITE),
-                new Square(File.e, Rank.SIX), new Piece(PieceType.EMPTY, PieceColor.NONE),
-                new Square(File.e, Rank.ONE), new Piece(PieceType.EMPTY, PieceColor.NONE),
-                new Square(File.h, Rank.FOUR), new Piece(PieceType.EMPTY, PieceColor.NONE),
-                new Square(File.a, Rank.FOUR), new Piece(PieceType.EMPTY, PieceColor.NONE),
-                new Square(File.a, Rank.EIGHT), new Piece(PieceType.EMPTY, PieceColor.NONE),
-                new Square(File.h, Rank.SEVEN), new Piece(PieceType.EMPTY, PieceColor.NONE),
-                new Square(File.h, Rank.ONE), new Piece(PieceType.EMPTY, PieceColor.NONE),
-                new Square(File.b, Rank.ONE), new Piece(PieceType.EMPTY, PieceColor.NONE)
+                new Square(File.e, Rank.FOUR), Piece.of(PieceType.BISHOP, PieceColor.WHITE),
+                new Square(File.e, Rank.SIX), Piece.of(PieceType.EMPTY, PieceColor.NONE),
+                new Square(File.e, Rank.ONE), Piece.of(PieceType.EMPTY, PieceColor.NONE),
+                new Square(File.h, Rank.FOUR), Piece.of(PieceType.EMPTY, PieceColor.NONE),
+                new Square(File.a, Rank.FOUR), Piece.of(PieceType.EMPTY, PieceColor.NONE),
+                new Square(File.a, Rank.EIGHT), Piece.of(PieceType.EMPTY, PieceColor.NONE),
+                new Square(File.h, Rank.SEVEN), Piece.of(PieceType.EMPTY, PieceColor.NONE),
+                new Square(File.h, Rank.ONE), Piece.of(PieceType.EMPTY, PieceColor.NONE),
+                new Square(File.b, Rank.ONE), Piece.of(PieceType.EMPTY, PieceColor.NONE)
         ));
         final Square source = new Square(File.e, Rank.FOUR);
         final Square target = new Square(file, rank);
@@ -47,8 +47,8 @@ class QueenMoveStrategyTest {
     void returnFalseIfQueenCannotMove() {
         final MoveStrategy moveStrategy = new QueenMoveStrategy();
         final Board board = new Board(Map.of(
-                new Square(File.e, Rank.FOUR), new Piece(PieceType.BISHOP, PieceColor.WHITE),
-                new Square(File.g, Rank.FIVE), new Piece(PieceType.EMPTY, PieceColor.NONE)
+                new Square(File.e, Rank.FOUR), Piece.of(PieceType.BISHOP, PieceColor.WHITE),
+                new Square(File.g, Rank.FIVE), Piece.of(PieceType.EMPTY, PieceColor.NONE)
         ));
         final Square source = new Square(File.e, Rank.FOUR);
         final Square target = new Square(File.g, Rank.FIVE);

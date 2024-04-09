@@ -37,35 +37,35 @@ class BoardFactoryTest {
 
         IntStream.range(0, piecesArrangement.size())
                 .forEach(i -> expected.put(new Square(File.values()[i], Rank.EIGHT),
-                        new Piece(piecesArrangement.get(i), PieceColor.BLACK)));
+                        Piece.of(piecesArrangement.get(i), PieceColor.BLACK)));
 
         IntStream.range(0, piecesArrangement.size())
                 .forEach(i -> expected.put(new Square(File.values()[i], Rank.SEVEN),
-                        new Piece(PieceType.PAWN, PieceColor.BLACK)));
+                        Piece.of(PieceType.PAWN, PieceColor.BLACK)));
 
         IntStream.range(0, piecesArrangement.size())
                 .forEach(i -> expected.put(new Square(File.values()[i], Rank.SIX),
-                        new Piece(PieceType.EMPTY, PieceColor.NONE)));
+                        Piece.of(PieceType.EMPTY, PieceColor.NONE)));
 
         IntStream.range(0, piecesArrangement.size())
                 .forEach(i -> expected.put(new Square(File.values()[i], Rank.FIVE),
-                        new Piece(PieceType.EMPTY, PieceColor.NONE)));
+                        Piece.of(PieceType.EMPTY, PieceColor.NONE)));
 
         IntStream.range(0, piecesArrangement.size())
                 .forEach(i -> expected.put(new Square(File.values()[i], Rank.FOUR),
-                        new Piece(PieceType.EMPTY, PieceColor.NONE)));
+                        Piece.of(PieceType.EMPTY, PieceColor.NONE)));
 
         IntStream.range(0, piecesArrangement.size())
                 .forEach(i -> expected.put(new Square(File.values()[i], Rank.THREE),
-                        new Piece(PieceType.EMPTY, PieceColor.NONE)));
+                        Piece.of(PieceType.EMPTY, PieceColor.NONE)));
 
         IntStream.range(0, piecesArrangement.size())
                 .forEach(i -> expected.put(new Square(File.values()[i], Rank.TWO),
-                        new Piece(PieceType.PAWN, PieceColor.WHITE)));
+                        Piece.of(PieceType.PAWN, PieceColor.WHITE)));
 
         IntStream.range(0, piecesArrangement.size())
                 .forEach(i -> expected.put(new Square(File.values()[i], Rank.ONE),
-                        new Piece(piecesArrangement.get(i), PieceColor.WHITE)));
+                        Piece.of(piecesArrangement.get(i), PieceColor.WHITE)));
 
         return expected;
     }

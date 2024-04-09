@@ -24,11 +24,11 @@ class BishopMoveStrategyTest {
     void returnTrueWhenBishopCanMove(final File file, final Rank rank) {
         final MoveStrategy moveStrategy = new BishopMoveStrategy();
         final Board board = new Board(Map.of(
-                new Square(File.e, Rank.FOUR), new Piece(PieceType.BISHOP, PieceColor.WHITE),
-                new Square(File.a, Rank.EIGHT), new Piece(PieceType.EMPTY, PieceColor.NONE),
-                new Square(File.h, Rank.SEVEN), new Piece(PieceType.EMPTY, PieceColor.NONE),
-                new Square(File.b, Rank.ONE), new Piece(PieceType.EMPTY, PieceColor.NONE),
-                new Square(File.h, Rank.ONE), new Piece(PieceType.EMPTY, PieceColor.NONE)
+                new Square(File.e, Rank.FOUR), Piece.of(PieceType.BISHOP, PieceColor.WHITE),
+                new Square(File.a, Rank.EIGHT), Piece.of(PieceType.EMPTY, PieceColor.NONE),
+                new Square(File.h, Rank.SEVEN), Piece.of(PieceType.EMPTY, PieceColor.NONE),
+                new Square(File.b, Rank.ONE), Piece.of(PieceType.EMPTY, PieceColor.NONE),
+                new Square(File.h, Rank.ONE), Piece.of(PieceType.EMPTY, PieceColor.NONE)
         ));
         final Square source = new Square(File.e, Rank.FOUR);
         final Square target = new Square(file, rank);
@@ -43,8 +43,8 @@ class BishopMoveStrategyTest {
     void returnFalseWhenBishopCannotMove() {
         final MoveStrategy moveStrategy = new BishopMoveStrategy();
         final Board board = new Board(Map.of(
-                new Square(File.e, Rank.FOUR), new Piece(PieceType.BISHOP, PieceColor.WHITE),
-                new Square(File.e, Rank.FIVE), new Piece(PieceType.EMPTY, PieceColor.NONE)
+                new Square(File.e, Rank.FOUR), Piece.of(PieceType.BISHOP, PieceColor.WHITE),
+                new Square(File.e, Rank.FIVE), Piece.of(PieceType.EMPTY, PieceColor.NONE)
         ));
         final Square source = new Square(File.e, Rank.FOUR);
         final Square target = new Square(File.e, Rank.FIVE);

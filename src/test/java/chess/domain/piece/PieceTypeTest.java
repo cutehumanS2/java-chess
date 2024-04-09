@@ -24,15 +24,15 @@ class PieceTypeTest {
         @CsvSource({"d, FIVE", "e, FIVE", "f, FIVE", "f, FOUR", "f, THREE", "e, THREE", "d, THREE", "d, FOUR"})
         void returnTrueIfKingCanMove(final File file, final Rank rank) {
             final Board board = new Board(Map.of(
-                    new Square(File.e, Rank.FOUR), new Piece(PieceType.BISHOP, PieceColor.WHITE),
-                    new Square(File.d, Rank.FIVE), new Piece(PieceType.EMPTY, PieceColor.NONE),
-                    new Square(File.e, Rank.FIVE), new Piece(PieceType.EMPTY, PieceColor.NONE),
-                    new Square(File.f, Rank.FIVE), new Piece(PieceType.EMPTY, PieceColor.NONE),
-                    new Square(File.f, Rank.FOUR), new Piece(PieceType.EMPTY, PieceColor.NONE),
-                    new Square(File.f, Rank.THREE), new Piece(PieceType.EMPTY, PieceColor.NONE),
-                    new Square(File.e, Rank.THREE), new Piece(PieceType.EMPTY, PieceColor.NONE),
-                    new Square(File.d, Rank.THREE), new Piece(PieceType.EMPTY, PieceColor.NONE),
-                    new Square(File.d, Rank.FOUR), new Piece(PieceType.EMPTY, PieceColor.NONE)
+                    new Square(File.e, Rank.FOUR), Piece.of(PieceType.BISHOP, PieceColor.WHITE),
+                    new Square(File.d, Rank.FIVE), Piece.of(PieceType.EMPTY, PieceColor.NONE),
+                    new Square(File.e, Rank.FIVE), Piece.of(PieceType.EMPTY, PieceColor.NONE),
+                    new Square(File.f, Rank.FIVE), Piece.of(PieceType.EMPTY, PieceColor.NONE),
+                    new Square(File.f, Rank.FOUR), Piece.of(PieceType.EMPTY, PieceColor.NONE),
+                    new Square(File.f, Rank.THREE), Piece.of(PieceType.EMPTY, PieceColor.NONE),
+                    new Square(File.e, Rank.THREE), Piece.of(PieceType.EMPTY, PieceColor.NONE),
+                    new Square(File.d, Rank.THREE), Piece.of(PieceType.EMPTY, PieceColor.NONE),
+                    new Square(File.d, Rank.FOUR), Piece.of(PieceType.EMPTY, PieceColor.NONE)
             ));
             final Square source = new Square(File.e, Rank.FOUR);
             final Square target = new Square(file, rank);
@@ -47,8 +47,8 @@ class PieceTypeTest {
         @Test
         void returnFalseIfKingCannotMove() {
             final Board board = new Board(Map.of(
-                    new Square(File.e, Rank.FOUR), new Piece(PieceType.BISHOP, PieceColor.WHITE),
-                    new Square(File.c, Rank.SEVEN), new Piece(PieceType.EMPTY, PieceColor.NONE)
+                    new Square(File.e, Rank.FOUR), Piece.of(PieceType.BISHOP, PieceColor.WHITE),
+                    new Square(File.c, Rank.SEVEN), Piece.of(PieceType.EMPTY, PieceColor.NONE)
             ));
             final Square source = new Square(File.e, Rank.FOUR);
             final Square target = new Square(File.c, Rank.SIX);
@@ -68,15 +68,15 @@ class PieceTypeTest {
         @CsvSource({"e, SIX", "e, ONE", "h, FOUR", "a, FOUR", "a, EIGHT", "h, SEVEN", "h, ONE", "b, ONE"})
         void returnTrueIfQueenCanMove(final File file, final Rank rank) {
             final Board board = new Board(Map.of(
-                    new Square(File.e, Rank.FOUR), new Piece(PieceType.BISHOP, PieceColor.WHITE),
-                    new Square(File.e, Rank.SIX), new Piece(PieceType.EMPTY, PieceColor.NONE),
-                    new Square(File.e, Rank.ONE), new Piece(PieceType.EMPTY, PieceColor.NONE),
-                    new Square(File.h, Rank.FOUR), new Piece(PieceType.EMPTY, PieceColor.NONE),
-                    new Square(File.a, Rank.FOUR), new Piece(PieceType.EMPTY, PieceColor.NONE),
-                    new Square(File.a, Rank.EIGHT), new Piece(PieceType.EMPTY, PieceColor.NONE),
-                    new Square(File.h, Rank.SEVEN), new Piece(PieceType.EMPTY, PieceColor.NONE),
-                    new Square(File.h, Rank.ONE), new Piece(PieceType.EMPTY, PieceColor.NONE),
-                    new Square(File.b, Rank.ONE), new Piece(PieceType.EMPTY, PieceColor.NONE)
+                    new Square(File.e, Rank.FOUR), Piece.of(PieceType.BISHOP, PieceColor.WHITE),
+                    new Square(File.e, Rank.SIX), Piece.of(PieceType.EMPTY, PieceColor.NONE),
+                    new Square(File.e, Rank.ONE), Piece.of(PieceType.EMPTY, PieceColor.NONE),
+                    new Square(File.h, Rank.FOUR), Piece.of(PieceType.EMPTY, PieceColor.NONE),
+                    new Square(File.a, Rank.FOUR), Piece.of(PieceType.EMPTY, PieceColor.NONE),
+                    new Square(File.a, Rank.EIGHT), Piece.of(PieceType.EMPTY, PieceColor.NONE),
+                    new Square(File.h, Rank.SEVEN), Piece.of(PieceType.EMPTY, PieceColor.NONE),
+                    new Square(File.h, Rank.ONE), Piece.of(PieceType.EMPTY, PieceColor.NONE),
+                    new Square(File.b, Rank.ONE), Piece.of(PieceType.EMPTY, PieceColor.NONE)
             ));
             final Square source = new Square(File.e, Rank.FOUR);
             final Square target = new Square(file, rank);
@@ -91,8 +91,8 @@ class PieceTypeTest {
         @Test
         void returnFalseIfQueenCannotMove() {
             final Board board = new Board(Map.of(
-                    new Square(File.e, Rank.FOUR), new Piece(PieceType.BISHOP, PieceColor.WHITE),
-                    new Square(File.g, Rank.FIVE), new Piece(PieceType.EMPTY, PieceColor.NONE)
+                    new Square(File.e, Rank.FOUR), Piece.of(PieceType.BISHOP, PieceColor.WHITE),
+                    new Square(File.g, Rank.FIVE), Piece.of(PieceType.EMPTY, PieceColor.NONE)
             ));
             final Square source = new Square(File.e, Rank.FOUR);
             final Square target = new Square(File.g, Rank.FIVE);
@@ -112,11 +112,11 @@ class PieceTypeTest {
         @CsvSource({"e, EIGHT", "e, ONE", "h, FOUR", "a, FOUR"})
         void returnTrueIfRookCanMove(final File file, final Rank rank) {
             final Board board = new Board(Map.of(
-                    new Square(File.e, Rank.FOUR), new Piece(PieceType.BISHOP, PieceColor.WHITE),
-                    new Square(File.e, Rank.EIGHT), new Piece(PieceType.EMPTY, PieceColor.NONE),
-                    new Square(File.e, Rank.ONE), new Piece(PieceType.EMPTY, PieceColor.NONE),
-                    new Square(File.h, Rank.FOUR), new Piece(PieceType.EMPTY, PieceColor.NONE),
-                    new Square(File.a, Rank.FOUR), new Piece(PieceType.EMPTY, PieceColor.NONE)
+                    new Square(File.e, Rank.FOUR), Piece.of(PieceType.BISHOP, PieceColor.WHITE),
+                    new Square(File.e, Rank.EIGHT), Piece.of(PieceType.EMPTY, PieceColor.NONE),
+                    new Square(File.e, Rank.ONE), Piece.of(PieceType.EMPTY, PieceColor.NONE),
+                    new Square(File.h, Rank.FOUR), Piece.of(PieceType.EMPTY, PieceColor.NONE),
+                    new Square(File.a, Rank.FOUR), Piece.of(PieceType.EMPTY, PieceColor.NONE)
             ));
             final Square source = new Square(File.e, Rank.FOUR);
             final Square target = new Square(file, rank);
@@ -132,8 +132,8 @@ class PieceTypeTest {
         @Test
         void returnFalseIfRookCannotMove() {
             final Board board = new Board(Map.of(
-                    new Square(File.e, Rank.FOUR), new Piece(PieceType.BISHOP, PieceColor.WHITE),
-                    new Square(File.h, Rank.FIVE), new Piece(PieceType.EMPTY, PieceColor.NONE)
+                    new Square(File.e, Rank.FOUR), Piece.of(PieceType.BISHOP, PieceColor.WHITE),
+                    new Square(File.h, Rank.FIVE), Piece.of(PieceType.EMPTY, PieceColor.NONE)
             ));
             final Square source = new Square(File.e, Rank.FOUR);
             final Square target = new Square(File.h, Rank.FIVE);
@@ -153,11 +153,11 @@ class PieceTypeTest {
         @CsvSource({"h, SEVEN", "b, ONE", "h, ONE", "a, EIGHT"})
         void returnTrueIfBishopCanMove(final File file, final Rank rank) {
             final Board board = new Board(Map.of(
-                    new Square(File.e, Rank.FOUR), new Piece(PieceType.BISHOP, PieceColor.WHITE),
-                    new Square(File.a, Rank.EIGHT), new Piece(PieceType.EMPTY, PieceColor.NONE),
-                    new Square(File.h, Rank.SEVEN), new Piece(PieceType.EMPTY, PieceColor.NONE),
-                    new Square(File.b, Rank.ONE), new Piece(PieceType.EMPTY, PieceColor.NONE),
-                    new Square(File.h, Rank.ONE), new Piece(PieceType.EMPTY, PieceColor.NONE)
+                    new Square(File.e, Rank.FOUR), Piece.of(PieceType.BISHOP, PieceColor.WHITE),
+                    new Square(File.a, Rank.EIGHT), Piece.of(PieceType.EMPTY, PieceColor.NONE),
+                    new Square(File.h, Rank.SEVEN), Piece.of(PieceType.EMPTY, PieceColor.NONE),
+                    new Square(File.b, Rank.ONE), Piece.of(PieceType.EMPTY, PieceColor.NONE),
+                    new Square(File.h, Rank.ONE), Piece.of(PieceType.EMPTY, PieceColor.NONE)
             ));
             final Square source = new Square(File.e, Rank.FOUR);
             final Square target = new Square(file, rank);
@@ -172,8 +172,8 @@ class PieceTypeTest {
         @Test
         void returnFalseIfBishopCannotMove() {
             final Board board = new Board(Map.of(
-                    new Square(File.e, Rank.FOUR), new Piece(PieceType.BISHOP, PieceColor.WHITE),
-                    new Square(File.e, Rank.FIVE), new Piece(PieceType.EMPTY, PieceColor.NONE)
+                    new Square(File.e, Rank.FOUR), Piece.of(PieceType.BISHOP, PieceColor.WHITE),
+                    new Square(File.e, Rank.FIVE), Piece.of(PieceType.EMPTY, PieceColor.NONE)
             ));
             final Square source = new Square(File.e, Rank.FOUR);
             final Square target = new Square(File.e, Rank.ONE);
@@ -193,15 +193,15 @@ class PieceTypeTest {
         @CsvSource({"f, SIX", "d, SIX", "c, FIVE", "c, THREE", "d, TWO", "f, TWO", "g, THREE", "g, FIVE"})
         void returnTrueIfKnightCanMove(final File file, final Rank rank) {
             final Board board = new Board(Map.of(
-                    new Square(File.e, Rank.FOUR), new Piece(PieceType.BISHOP, PieceColor.WHITE),
-                    new Square(File.f, Rank.SIX), new Piece(PieceType.EMPTY, PieceColor.NONE),
-                    new Square(File.d, Rank.SIX), new Piece(PieceType.EMPTY, PieceColor.NONE),
-                    new Square(File.c, Rank.FIVE), new Piece(PieceType.EMPTY, PieceColor.NONE),
-                    new Square(File.c, Rank.THREE), new Piece(PieceType.EMPTY, PieceColor.NONE),
-                    new Square(File.d, Rank.TWO), new Piece(PieceType.EMPTY, PieceColor.NONE),
-                    new Square(File.f, Rank.TWO), new Piece(PieceType.EMPTY, PieceColor.NONE),
-                    new Square(File.g, Rank.THREE), new Piece(PieceType.EMPTY, PieceColor.NONE),
-                    new Square(File.g, Rank.FIVE), new Piece(PieceType.EMPTY, PieceColor.NONE)
+                    new Square(File.e, Rank.FOUR), Piece.of(PieceType.BISHOP, PieceColor.WHITE),
+                    new Square(File.f, Rank.SIX), Piece.of(PieceType.EMPTY, PieceColor.NONE),
+                    new Square(File.d, Rank.SIX), Piece.of(PieceType.EMPTY, PieceColor.NONE),
+                    new Square(File.c, Rank.FIVE), Piece.of(PieceType.EMPTY, PieceColor.NONE),
+                    new Square(File.c, Rank.THREE), Piece.of(PieceType.EMPTY, PieceColor.NONE),
+                    new Square(File.d, Rank.TWO), Piece.of(PieceType.EMPTY, PieceColor.NONE),
+                    new Square(File.f, Rank.TWO), Piece.of(PieceType.EMPTY, PieceColor.NONE),
+                    new Square(File.g, Rank.THREE), Piece.of(PieceType.EMPTY, PieceColor.NONE),
+                    new Square(File.g, Rank.FIVE), Piece.of(PieceType.EMPTY, PieceColor.NONE)
             ));
             final Square source = new Square(File.e, Rank.FOUR);
             final Square target = new Square(file, rank);
@@ -216,8 +216,8 @@ class PieceTypeTest {
         @Test
         void returnFalseIfKnightCannotMove() {
             final Board board = new Board(Map.of(
-                    new Square(File.e, Rank.FOUR), new Piece(PieceType.BISHOP, PieceColor.WHITE),
-                    new Square(File.e, Rank.SIX), new Piece(PieceType.EMPTY, PieceColor.NONE)
+                    new Square(File.e, Rank.FOUR), Piece.of(PieceType.BISHOP, PieceColor.WHITE),
+                    new Square(File.e, Rank.SIX), Piece.of(PieceType.EMPTY, PieceColor.NONE)
             ));
             final Square source = new Square(File.e, Rank.FOUR);
             final Square target = new Square(File.e, Rank.SIX);
@@ -237,10 +237,10 @@ class PieceTypeTest {
         @CsvSource({"e, THREE", "e, FOUR", "f, THREE"})
         void returnTrueIfPawnCanMove(final File file, final Rank rank) {
             final Board board = new Board(Map.of(
-                    new Square(File.e, Rank.TWO), new Piece(PieceType.PAWN, PieceColor.WHITE),
-                    new Square(File.e, Rank.THREE), new Piece(PieceType.EMPTY, PieceColor.NONE),
-                    new Square(File.e, Rank.FOUR), new Piece(PieceType.EMPTY, PieceColor.NONE),
-                    new Square(File.f, Rank.THREE), new Piece(PieceType.PAWN, PieceColor.BLACK)
+                    new Square(File.e, Rank.TWO), Piece.of(PieceType.PAWN, PieceColor.WHITE),
+                    new Square(File.e, Rank.THREE), Piece.of(PieceType.EMPTY, PieceColor.NONE),
+                    new Square(File.e, Rank.FOUR), Piece.of(PieceType.EMPTY, PieceColor.NONE),
+                    new Square(File.f, Rank.THREE), Piece.of(PieceType.PAWN, PieceColor.BLACK)
             ));
             final Square source = new Square(File.e, Rank.TWO);
             final Square target = new Square(file, rank);
@@ -255,8 +255,8 @@ class PieceTypeTest {
         @Test
         void returnFalseIfPawnCannotMove() {
             final Board board = new Board(Map.of(
-                    new Square(File.e, Rank.TWO), new Piece(PieceType.PAWN, PieceColor.WHITE),
-                    new Square(File.e, Rank.FIVE), new Piece(PieceType.EMPTY, PieceColor.NONE)
+                    new Square(File.e, Rank.TWO), Piece.of(PieceType.PAWN, PieceColor.WHITE),
+                    new Square(File.e, Rank.FIVE), Piece.of(PieceType.EMPTY, PieceColor.NONE)
             ));
             final Square source = new Square(File.e, Rank.TWO);
             final Square target = new Square(File.e, Rank.FIVE);

@@ -19,13 +19,13 @@ class PieceTest {
     @CsvSource({"e, FIVE, true", "f, SIX, false"})
     void checkCanMoveFromSourceToTarget(final File targetFile, final Rank targetRank, final boolean expected) {
         final Board board = new Board(Map.of(
-                new Square(File.e, Rank.FOUR), new Piece(PieceType.QUEEN, PieceColor.WHITE),
-                new Square(File.e, Rank.FIVE), new Piece(PieceType.EMPTY, PieceColor.NONE),
-                new Square(File.f, Rank.SIX), new Piece(PieceType.EMPTY, PieceColor.NONE)
+                new Square(File.e, Rank.FOUR), Piece.of(PieceType.QUEEN, PieceColor.WHITE),
+                new Square(File.e, Rank.FIVE), Piece.of(PieceType.EMPTY, PieceColor.NONE),
+                new Square(File.f, Rank.SIX), Piece.of(PieceType.EMPTY, PieceColor.NONE)
         ));
         final Square source = new Square(File.e, Rank.FOUR);
         final Square target = new Square(targetFile, targetRank);
-        final Piece piece = new Piece(PieceType.QUEEN, PieceColor.WHITE);
+        final Piece piece = Piece.of(PieceType.QUEEN, PieceColor.WHITE);
 
         final boolean actual = piece.canMove(board, source, target);
 
@@ -36,7 +36,7 @@ class PieceTest {
     @ParameterizedTest
     @CsvSource({"WHITE, true", "BLACK, false"})
     void returnTrueWhenPiecesAreSameColor(final PieceColor other, final boolean expected) {
-        final Piece piece = new Piece(PieceType.ROOK, PieceColor.WHITE);
+        final Piece piece = Piece.of(PieceType.ROOK, PieceColor.WHITE);
 
         final boolean actual = piece.isSameColor(other);
 
@@ -47,7 +47,7 @@ class PieceTest {
     @ParameterizedTest
     @CsvSource({"BLACK, true", "WHITE, false"})
     void checkPieceColorIsBlack(final PieceColor other, final boolean expected) {
-        final Piece piece = new Piece(PieceType.ROOK, other);
+        final Piece piece = Piece.of(PieceType.ROOK, other);
 
         final boolean actual = piece.isSameColor(PieceColor.BLACK);
 
@@ -56,9 +56,9 @@ class PieceTest {
 
     @DisplayName("기물의 타입이 EMPTY가 아닌지 확인한다.")
     @ParameterizedTest
-    @CsvSource({"PAWN, true", "EMPTY, false"})
-    void checkPieceTypeIsEmpty(final PieceType type, final boolean expected) {
-        final Piece piece = new Piece(type, PieceColor.NONE);
+    @CsvSource({"PAWN, WHITE, true", "EMPTY, NONE, false"})
+    void checkPieceTypeIsEmpty(final PieceType type, final PieceColor color, final boolean expected) {
+        final Piece piece = Piece.of(type, color);
 
         final boolean actual = piece.isNotEmpty();
 

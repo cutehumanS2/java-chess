@@ -11,6 +11,10 @@ import chess.domain.piece.strategy.QueenMoveStrategy;
 import chess.domain.piece.strategy.RookMoveStrategy;
 import chess.domain.square.Square;
 
+import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
+
 public enum PieceType {
 
     KING(new KingMoveStrategy(), 0),
@@ -28,6 +32,12 @@ public enum PieceType {
     PieceType(MoveStrategy moveStrategy, double score) {
         this.moveStrategy = moveStrategy;
         this.score = score;
+    }
+
+    public static List<PieceType> valuesWithoutEmpty() {
+        return Arrays.stream(PieceType.values())
+                .filter(type -> type != PieceType.EMPTY)
+                .toList();
     }
 
     public boolean canMove(final Board board, final Square source, final Square target) {
