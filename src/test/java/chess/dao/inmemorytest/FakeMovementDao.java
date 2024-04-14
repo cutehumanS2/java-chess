@@ -23,18 +23,18 @@ public class FakeMovementDao implements MovementDao {
 
     @Override
     public Long save(final MovementRequestDto requestDto) {
-        final Long gameId = requestDto.gameId();
-        final MovementResponseDto responseDto = new MovementResponseDto(id, requestDto.gameId(),
+        final Long roomId = requestDto.roomId();
+        final MovementResponseDto responseDto = new MovementResponseDto(id, requestDto.roomId(),
                 requestDto.sourceFile(), requestDto.sourceRank(), requestDto.targetFile(), requestDto.targetRank());
-        movements.putIfAbsent(gameId, new ArrayList<>());
-        movements.get(gameId).add(MovementResponseDto.toMovement(responseDto));
+        movements.putIfAbsent(roomId, new ArrayList<>());
+        movements.get(roomId).add(MovementResponseDto.toMovement(responseDto));
         return id++;
     }
 
     @Override
-    public List<Movement> findMovementsById(Long gameId) {
+    public List<Movement> findMovementsById(Long roomId) {
         return movements.entrySet().stream()
-                .filter(entry -> Objects.equals(entry.getKey(), gameId))
+                .filter(entry -> Objects.equals(entry.getKey(), roomId))
                 .flatMap(entry -> entry.getValue().stream())
                 .collect(Collectors.toList());
     }

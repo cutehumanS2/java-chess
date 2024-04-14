@@ -1,4 +1,4 @@
-package chess.view;
+package chess.view.outputview;
 
 import chess.domain.piece.Piece;
 import chess.domain.piece.PieceColor;
@@ -12,63 +12,65 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
-public class OutputView {
+public class ChessGameOutputView {
 
     private static final int BOARD_SIZE = 8;
-    private static final String TITLE_START = "> 체스 게임을 시작합니다.%n" +
-            "> 게임 시작 : start%n" +
-            "> 게임 종료 : end%n" +
-            "> 게임 이동 : move source위치 target위치 - 예. move b2 b3%n" +
-            "> 게임 결과 : status%n";
 
-    public static void printStartMessage() {
-        System.out.printf(TITLE_START);
+    public void printEnterMessage(final Long roomId, final String name) {
+        System.out.printf("> %d번 [%s] 방에 입장하였습니다.%n", roomId, name);
     }
 
-    public static void printBoard(final Map<Square, Piece> board) {
+    public void printCommandMessage() {
+        System.out.println("> 게임 시작 : start");
+        System.out.println("> 게임 종료 : end");
+        System.out.println("> 게임 이동 : move source위치 target위치 - 예. move b2 b3");
+        System.out.println("> 게임 결과 : status");
+    }
+
+    public void printBoard(final Map<Square, Piece> board) {
         for (int i = BOARD_SIZE; i > 0; i--) {
             System.out.println(String.join("", createPiecesLine(board, Rank.findByIndex(i))));
         }
         System.out.println();
     }
 
-    private static List<String> createPiecesLine(final Map<Square, Piece> board, final Rank rank) {
+    private List<String> createPiecesLine(final Map<Square, Piece> board, final Rank rank) {
         return Arrays.stream(File.values())
                 .map(file -> board.get(new Square(file, rank)))
                 .map(piece -> PieceMapper.findNameByTypeAndColor(piece.getType(), piece.getColor()))
                 .toList();
     }
 
-    public static void printCurrentTurn(final PieceColor turn) {
+    public void printCurrentTurn(final PieceColor turn) {
         System.out.printf("%n> " + ColorMapper.findNameByColor(turn) + " 진영의 턴입니다.%n");
     }
 
-    public static void printGameResult(
+    public void printGameResult(
             final PieceColor winnerTeamColor, final double whiteTeamScore, final double blackTeamScore) {
         printScoreByColor(PieceColor.WHITE, whiteTeamScore);
         printScoreByColor(PieceColor.BLACK, blackTeamScore);
         printWinnerTeam(winnerTeamColor);
     }
 
-    private static void printScoreByColor(final PieceColor teamColor, final double teamScore) {
+    private void printScoreByColor(final PieceColor teamColor, final double teamScore) {
         System.out.println("> " + ColorMapper.findNameByColor(teamColor) + " 진영 점수 : " + teamScore);
     }
 
-    private static void printWinnerTeam(final PieceColor teamColor) {
-        System.out.println("> 승리 진영 : " + ColorMapper.findNameByColor(teamColor) + System.lineSeparator());
+    private void printWinnerTeam(final PieceColor teamColor) {
+        System.out.println("> 승리 진영 : " + ColorMapper.findNameByColor(teamColor));
     }
 
-    public static void printFinalGameResult(
+    public void printFinalGameResult(
             final PieceColor winnerTeamColor, final double whiteTeamScore, final double blackTeamScore) {
         printGameResult(winnerTeamColor, whiteTeamScore, blackTeamScore);
         printFinalWinnerTeam(winnerTeamColor);
     }
 
-    private static void printFinalWinnerTeam(final PieceColor teamColor) {
-        System.out.println("> 최종 승리 진영은 " + ColorMapper.findNameByColor(teamColor) + " 진영입니다.");
+    private void printFinalWinnerTeam(final PieceColor teamColor) {
+        System.out.printf("> 최종 승리 진영은 %s 입니다.%n%n", ColorMapper.findNameByColor(teamColor));
     }
 
-    public static void printErrorMessage(final String message) {
+    public void printErrorMessage(final String message) {
         System.out.println("> " + message);
     }
 }

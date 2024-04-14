@@ -6,7 +6,7 @@ public class InputView {
 
     private static final Scanner scanner = new Scanner(System.in);
 
-    public static String readCommand() {
+    public String readCommand() {
         final String input = scanner.nextLine();
         CommandType.validateFormat(input);
         return input;

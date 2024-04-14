@@ -3,6 +3,7 @@ package chess.controller;
 import chess.domain.game.GameStatus;
 import chess.domain.game.GameResult;
 import chess.domain.piece.PieceColor;
+import chess.domain.room.Room;
 import chess.domain.square.File;
 import chess.domain.square.Rank;
 import chess.domain.square.Square;
@@ -10,7 +11,7 @@ import chess.dto.Movement;
 import chess.service.ChessGameService;
 import chess.view.CommandType;
 import chess.view.InputView;
-import chess.view.OutputView;
+import chess.view.outputview.ChessGameOutputView;
 
 import java.util.EnumMap;
 import java.util.List;
@@ -18,7 +19,7 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.function.Supplier;
 
-public class ChessGame {
+public class ChessGameController {
 
     private static final String MOVE_COMMAND_DELIMITER = " ";
     private static final String FILE_RANK_DELIMITER = "";
@@ -27,29 +28,37 @@ public class ChessGame {
     private static final int FILE_INDEX = 0;
     private static final int RANK_INDEX = 1;
 
+    private final InputView inputView;
+    private final ChessGameOutputView outputView;
     private final ChessGameService gameService;
-    private final Map<CommandType, Command> commands;
+    private final Map<CommandType, ChessGameCommand> commands;
 
-    public ChessGame(final ChessGameService gameService) {
+    // TODO: 로직 보완 필요 ~ 턴 정보 복구, 보드 정보 중복 출력
+
+    public ChessGameController(final InputView inputView, final ChessGameOutputView outputView,
+                               final ChessGameService gameService) {
+        this.inputView = inputView;
+        this.outputView = outputView;
         this.gameService = gameService;
         this.commands = new EnumMap<>(CommandType.class);
-        commands.put(CommandType.MOVE, (gameStatus, gameResult, commandInput) -> move(gameStatus, commandInput));
-        commands.put(CommandType.STATUS, (gameStatus, gameResult, commandInput) -> status(gameResult));
-        commands.put(CommandType.END, ((gameStatus, gameResult, commandInput) -> end(gameResult)));
+        commands.put(CommandType.MOVE, (roomId, gameStatus, gameResult, commandInput) -> move(roomId, gameStatus, commandInput));
+        commands.put(CommandType.STATUS, (roomId, gameStatus, gameResult, commandInput) -> status(gameResult));
+        commands.put(CommandType.END, ((roomId, gameStatus, gameResult, commandInput) -> end(gameResult)));
     }
 
-    public void run() {
-        OutputView.printStartMessage();
+    public void run(final Room room) {
+        outputView.printEnterMessage(room.getId(), room.getName());
+        outputView.printCommandMessage();
 
         final CommandType commandType = requestUntilValid(this::requestStartCommand);
         if (commandType == CommandType.END) {
             return;
         }
-        startGame();
+        startGame(room.getId());
     }
 
     private CommandType requestStartCommand() {
-        final String commandInput = requestUntilValid(InputView::readCommand);
+        final String commandInput = requestUntilValid(inputView::readCommand);
         final CommandType commandType = requestUntilValid(() -> CommandType.findByValue(commandInput));
         validateIsNotStartAndEnd(commandType);
         return commandType;
@@ -61,34 +70,34 @@ public class ChessGame {
         }
     }
 
-    private void startGame() {
+    private void startGame(final Long roomId) {
         final GameStatus gameStatus = new GameStatus(PieceColor.WHITE);
-        recoveryGame(gameStatus);
+        recoveryGame(gameStatus, roomId);
         final GameResult gameResult = new GameResult(gameStatus.getPieces());
-        OutputView.printCurrentTurn(gameStatus.getTurn());
-        OutputView.printBoard(gameStatus.getPieces());
-        playGameUntilEnd(gameStatus, gameResult);
+        outputView.printCurrentTurn(gameStatus.getTurn());
+        outputView.printBoard(gameStatus.getPieces());
+        playGameUntilEnd(roomId, gameStatus, gameResult);
     }
 
-    private void recoveryGame(final GameStatus gameStatus) {
-        List<Movement> movements = gameService.loadMovements(1L);
+    private void recoveryGame(final GameStatus gameStatus, final Long roomId) {
+        List<Movement> movements = gameService.loadMovements(roomId);
         movements.forEach(movement -> gameStatus.move(movement.source(), movement.target()));
     }
 
-    private void playGameUntilEnd(final GameStatus gameStatus, final GameResult gameResult) {
+    private void playGameUntilEnd(final Long roomId, final GameStatus gameStatus, final GameResult gameResult) {
         CommandType command = CommandType.NONE;
         while (command != CommandType.END) {
-            command = requestUntilValid(() -> playGame(gameStatus, gameResult));
+            command = requestUntilValid(() -> playGame(roomId, gameStatus, gameResult));
             command = isGameOver(gameResult, command);
-            OutputView.printCurrentTurn(gameStatus.getTurn());
-            OutputView.printBoard(gameStatus.getPieces());
         }
     }
 
-    private CommandType playGame(final GameStatus gameStatus, final GameResult gameResult) {
-        String commandInput = requestUntilValid(InputView::readCommand);
+    private CommandType playGame(final Long roomId, final GameStatus gameStatus, final GameResult gameResult) {
+        outputView.printCurrentTurn(gameStatus.getTurn());
+        outputView.printBoard(gameStatus.getPieces());
+        String commandInput = requestUntilValid(inputView::readCommand);
         CommandType commandType = requestCommand(commandInput);
-        commands.get(commandType).execute(gameStatus, gameResult, commandInput);
+        commands.get(commandType).execute(roomId, gameStatus, gameResult, commandInput);
         return commandType;
     }
 
@@ -104,14 +113,13 @@ public class ChessGame {
         }
     }
 
-    private void move(final GameStatus gameStatus, final String commandInput) {
+    private void move(final Long roomId, final GameStatus gameStatus, final String commandInput) {
         final List<String> splitCommand = List.of(commandInput.split(MOVE_COMMAND_DELIMITER));
         final Square source = createSquare(splitCommand.get(SOURCE_SQUARE_INDEX));
         final Square target = createSquare(splitCommand.get(TARGET_SQUARE_INDEX));
         gameStatus.move(source, target);
 
-        final Long gameId = gameService.upsertCurrentTurn(gameStatus);
-        gameService.saveMovement(gameId, source, target);
+        gameService.saveMovement(roomId, source, target);
     }
 
     private Square createSquare(final String commandInput) {
@@ -122,7 +130,7 @@ public class ChessGame {
     }
 
     private void end(final GameResult gameResult) {
-        OutputView.printFinalGameResult(gameResult.findWinnerTeam(), gameResult.calculateTotalScore(PieceColor.WHITE),
+        outputView.printFinalGameResult(gameResult.findWinnerTeam(), gameResult.calculateTotalScore(PieceColor.WHITE),
                 gameResult.calculateTotalScore(PieceColor.BLACK));
     }
 
@@ -135,7 +143,7 @@ public class ChessGame {
     }
 
     private void status(final GameResult gameResult) {
-        OutputView.printGameResult(gameResult.findWinnerTeam(), gameResult.calculateTotalScore(PieceColor.WHITE),
+        outputView.printGameResult(gameResult.findWinnerTeam(), gameResult.calculateTotalScore(PieceColor.WHITE),
                 gameResult.calculateTotalScore(PieceColor.BLACK));
     }
 
@@ -151,7 +159,7 @@ public class ChessGame {
         try {
             return Optional.of(supplier.get());
         } catch (IllegalArgumentException e) {
-            OutputView.printErrorMessage(e.getMessage());
+            outputView.printErrorMessage(e.getMessage());
             return Optional.empty();
         }
     }

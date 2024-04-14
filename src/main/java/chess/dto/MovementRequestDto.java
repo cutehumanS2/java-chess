@@ -5,10 +5,10 @@ import chess.domain.square.Rank;
 import chess.domain.square.Square;
 
 public record MovementRequestDto(
-        Long gameId, String sourceFile, String sourceRank, String targetFile, String targetRank) {
+        Long roomId, String sourceFile, String sourceRank, String targetFile, String targetRank) {
 
-    public static MovementRequestDto toDto(Long gameId, Square source, Square target) {
-        return new MovementRequestDto(gameId,
+    public static MovementRequestDto toDto(Long roomId, Square source, Square target) {
+        return new MovementRequestDto(roomId,
                 convertToFileString(source.file()), converToRankString(source.rank()),
                 convertToFileString(target.file()), converToRankString(target.rank()));
     }

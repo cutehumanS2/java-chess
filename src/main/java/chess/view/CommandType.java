@@ -6,6 +6,9 @@ import java.util.regex.Pattern;
 public enum CommandType {
 
     START("^start$"),
+    SHOW("^show$"),
+    ENTER("^enter \\d+$"),
+    CREATE("create [ㄱ-ㅎ가-힣a-zA-Z0-9]+$"),
     MOVE("^move [a-h][1-8] [a-h][1-8]$"),
     END("^end$"),
     STATUS("^status$"),

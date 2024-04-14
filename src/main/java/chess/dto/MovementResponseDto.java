@@ -5,7 +5,7 @@ import chess.domain.square.Rank;
 import chess.domain.square.Square;
 
 public record MovementResponseDto(
-        Long id, Long gameId, String sourceFile, String sourceRank, String targetFile, String targetRank) {
+        Long id, Long roomId, String sourceFile, String sourceRank, String targetFile, String targetRank) {
 
     public static Movement toMovement(final MovementResponseDto responseDto) {
         return new Movement(convertToSquare(responseDto.sourceFile, responseDto.sourceRank),
